@@ -1,5 +1,14 @@
 <h1>Welcome to Video app</h1>
 
+<mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom">
+  <mat-button-toggle id="metro" name="metro" value="metro" aria-label="Metro mode">
+    Metro view
+  </mat-button-toggle>
+  <mat-button-toggle id="list" name="list" value="list" aria-label="List mode">
+    List view
+  </mat-button-toggle>
+</mat-button-toggle-group>
+
 <mat-grid-list cols="4" rowHeight="100px">
   <mat-grid-tile
       *ngFor="let tile of tiles"
@@ -12,6 +21,7 @@
 
 <mat-paginator [length]="length"
               [pageSize]="pageSize"
+              [pageIndex]="pageIndex"
               [pageSizeOptions]="pageSizeOptions"
               (page)="pageEvent = $event">
 </mat-paginator>

@@ -1,1 +1,32 @@
-<p>add works!</p>
+<form class="example-form" class="add-form" #form="ngForm">
+  <div>
+    <label for="videoId">Video identifier</label>
+  </div>
+  <div>
+    <mat-form-field>
+      <input id="videoId" name="videoId" matInput [(ngModel)]="apply.videoId" #videoId="ngModel" required />
+    </mat-form-field>
+  </div>
+  <div>
+    <label for="youtube">
+      Platform
+    </label>
+  </div>
+  <div>
+    <mat-button-toggle-group #platform="matButtonToggleGroup" value="youtube">
+      <mat-button-toggle id="youtube" name="youtube" value="youtube" aria-label="Text align center">
+        YouTube
+      </mat-button-toggle>
+      <mat-button-toggle id="vimeo" name="vimeo" value="vimeo" aria-label="Text align center">
+        vimeo
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div class="margin-top">
+    <button mat-raised-button color="primary" (click)="onAddClick(form, platform)">Add</button>
+  </div>
+</form>
+YouTube example: D2qREDVuGgQ
+<br>
+vimeo example: 172825105
