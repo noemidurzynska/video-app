@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Passwords } from '../models';
+import { Passwords, Source, Video } from '../models';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 @Component({
   selector: 'app-add',
@@ -15,7 +16,8 @@ export class AddComponent implements OnInit {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient
-    , private readonly router: Router) { }
+    , private readonly router: Router
+    , @Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   ngOnInit() {
   }
@@ -53,6 +55,23 @@ export class AddComponent implements OnInit {
       '&part=snippet,contentDetails,statistics,status')
       .subscribe((response: any) => {
 
+        if (response.items.length === 0) {
+          return;
+        }
+
+        const item = response.items[0];
+
+        const video = new Video();
+        video.source = Source.Youtube;
+        video.id = item.id;
+        video.title = item.snippet.title;
+        video.date = item.snippet.publishedAt;
+        video.image = item.snippet.thumbnails.default.url;
+        video.playesCount = item.statistics.viewCount;
+        video.likesCount = item.statistics.likeCount;
+
+        this.saveVideo(video);
+
         this.router.navigate(['/home']);
       });
   }
@@ -68,7 +87,29 @@ export class AddComponent implements OnInit {
     this.http.get('https://api.vimeo.com/videos/' + videoId, requestOptions)
       .subscribe((response: any) => {
 
+        const video = new Video();
+        video.source = Source.Vimeo;
+        video.id = response.resource_key;
+        video.title = response.name;
+        video.date = response.created_time;
+        video.image = response.pictures.sizes[0].link;
+        video.likesCount = response.metadata.connections.likes.total;
+
+        this.saveVideo(video);
+
         this.router.navigate(['/home']);
       });
+  }
+
+  private saveVideo(video: Video): void {
+
+    let videoList = this.storage.get('video-list');
+    if (videoList === undefined) {
+      videoList = new Array<Video>();
+    }
+
+    videoList.push(video);
+
+    this.storage.set('video-list', videoList);
   }
 }

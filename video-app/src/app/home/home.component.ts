@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
+import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 
 export interface Tile {
   color: string;
@@ -33,9 +34,11 @@ export class HomeComponent implements OnInit {
 
   // MatPaginator Output
   pageEvent: PageEvent;
-  constructor() { }
+  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   ngOnInit() {
+
+    let videoList = this.storage.get('video-list');
   }
 
 }
