@@ -1,6 +1,6 @@
 <h1>Welcome to Video app</h1>
 
-<mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom">
+<mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom" (change)="onViewChange(viewMode)">
   <mat-button-toggle id="metro" name="metro" value="metro" aria-label="Metro mode">
     Metro view
   </mat-button-toggle>
@@ -11,11 +11,18 @@
 
 <mat-grid-list cols="4" rowHeight="100px">
   <mat-grid-tile
-      *ngFor="let tile of tiles"
-      [colspan]="tile.cols"
-      [rowspan]="tile.rows"
-      [style.background]="tile.color">
-    {{tile.text}}
+      *ngFor="let video of videos"
+      [colspan]="video.cols"
+      [rowspan]="video.rows"
+      [style.background]="'lightblue'">
+      <img src="{{video.image}}">
+    {{video.title}}
+    <br/>
+    {{video.source}}
+    <br/>
+    {{video.date | date: 'medium'}}
+    <br/>
+    Liked {{video.likesCount}}, Played {{video.playesCount}}
   </mat-grid-tile>
 </mat-grid-list>
 
@@ -23,5 +30,5 @@
               [pageSize]="pageSize"
               [pageIndex]="pageIndex"
               [pageSizeOptions]="pageSizeOptions"
-              (page)="pageEvent = $event">
+              (page)="onPageChanged($event)">
 </mat-paginator>
