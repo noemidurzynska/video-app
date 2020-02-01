@@ -1,10 +1,13 @@
 <div class="margin-around">
-  <button mat-menu-item routerLink="/home">
-    <span>Home</span>
-  </button>
-  <button mat-menu-item routerLink="/add">
-    <span>Add</span>
-  </button>
+
+  <mat-button-toggle-group name="fontStyle" aria-label="Font Style">
+    <mat-button-toggle routerLink="/home">
+      <span>Home</span>
+    </mat-button-toggle>
+    <mat-button-toggle routerLink="/add">
+      <span>Add</span>
+    </mat-button-toggle>
+  </mat-button-toggle-group>
 </div>
 
 <div class="margin-around">

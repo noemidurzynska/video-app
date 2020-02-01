@@ -8,4 +8,5 @@ export class Video {
   public image: string;
   public date: Date;
   public source: Source;
+  public urlCode: string;
 }

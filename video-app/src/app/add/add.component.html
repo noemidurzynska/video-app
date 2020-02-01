@@ -1,4 +1,4 @@
-<form class="example-form" class="add-form" #form="ngForm">
+<form class="example-form" class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform)">
   <div>
     <label for="videoId">Video identifier</label>
   </div>
@@ -23,10 +23,12 @@
     </mat-button-toggle-group>
   </div>
 
-  <div class="margin-top">
-    <button mat-raised-button color="primary" (click)="onAddClick(form, platform)">Add</button>
+  <div class="margin-top float-left">
+    <button mat-raised-button color="warn" (click)="onAddClick(form, platform)">Add</button>
   </div>
+
+  <div class="margin-top float-right">
+    <button mat-stroked-button color="warn" (click)="onAddDefaultClick()">Add defaults</button>
+  </div>
+  <div class="clear-both"></div>
 </form>
-YouTube example: D2qREDVuGgQ
-<br>
-vimeo example: 172825105

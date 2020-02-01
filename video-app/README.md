@@ -1,6 +1,6 @@
 # VideoApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.23.
+This is video library with your favorite films.
 
 ## Development server
 

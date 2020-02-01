@@ -39,14 +39,14 @@ export class AddComponent implements OnInit {
 
     if (platform.value === 'youtube') {
 
-      this.getYouTubeVideo(videoId);
+      this.getYouTubeVideo(videoId, true);
     } else if (platform.value === 'vimeo') {
 
-      this.getVimeoVideo(videoId);
+      this.getVimeoVideo(videoId, true);
     }
   }
 
-  private getYouTubeVideo(videoId: string): void {
+  private getYouTubeVideo(videoId: string, redirect: boolean): void {
 
     this.http.get('https://www.googleapis.com/youtube/v3/videos?id='
       + videoId +
@@ -69,14 +69,17 @@ export class AddComponent implements OnInit {
         video.image = item.snippet.thumbnails.default.url;
         video.playesCount = item.statistics.viewCount;
         video.likesCount = item.statistics.likeCount;
+        video.urlCode = videoId;
 
         this.saveVideo(video);
 
-        this.router.navigate(['/home']);
+        if (redirect) {
+          this.router.navigate(['/home']);
+        }
       });
   }
 
-  private getVimeoVideo(videoId: string): void {
+  private getVimeoVideo(videoId: string, redirect: boolean): void {
 
     const requestOptions = {
       headers: new HttpHeaders({
@@ -94,10 +97,13 @@ export class AddComponent implements OnInit {
         video.date = response.created_time;
         video.image = response.pictures.sizes[0].link;
         video.likesCount = response.metadata.connections.likes.total;
+        video.urlCode = videoId;
 
         this.saveVideo(video);
 
-        this.router.navigate(['/home']);
+        if (redirect) {
+          this.router.navigate(['/home']);
+        }
       });
   }
 
@@ -111,5 +117,16 @@ export class AddComponent implements OnInit {
     videoList.push(video);
 
     this.storage.set('video-list', videoList);
+  }
+
+  public onAddDefaultClick(): void {
+    this.getVimeoVideo('172825105', false);
+    this.getYouTubeVideo('D2qREDVuGgQ', false);
+    this.getYouTubeVideo('5ZwdzeZ-T-s', false);
+    this.getYouTubeVideo('ggbtTdcmqtI', false);
+
+    setTimeout(() => {
+      this.router.navigate(['/home']);
+    }, 2000);
   }
 }

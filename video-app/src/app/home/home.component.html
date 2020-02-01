@@ -1,6 +1,10 @@
-<h1>Welcome to Video app</h1>
+<h1>
+  <img src="https://cdn.pixabay.com/photo/2016/10/06/12/49/youtube-1718976_960_720.png" style="height: 50px; position: relative; top: 10px;" />
+  Welcome to Video app
+</h1>
 
-<mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom" (change)="onViewChange(viewMode)">
+<mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom"
+  (change)="onViewChange(viewMode)">
   <mat-button-toggle id="metro" name="metro" value="metro" aria-label="Metro mode">
     Metro view
   </mat-button-toggle>
@@ -9,26 +13,53 @@
   </mat-button-toggle>
 </mat-button-toggle-group>
 
-<mat-grid-list cols="4" rowHeight="100px">
-  <mat-grid-tile
-      *ngFor="let video of videos"
-      [colspan]="video.cols"
-      [rowspan]="video.rows"
-      [style.background]="'lightblue'">
-      <img src="{{video.image}}">
-    {{video.title}}
-    <br/>
-    {{video.source}}
-    <br/>
-    {{video.date | date: 'medium'}}
-    <br/>
-    Liked {{video.likesCount}}, Played {{video.playesCount}}
-  </mat-grid-tile>
-</mat-grid-list>
+<mat-button-toggle-group #showFav="matButtonToggleGroup" value="allVideos" class="margin-bottom margin-left"
+  (change)="onFavoriteShow(showFav)">
+  <mat-button-toggle id="allVideos" name="allVideos" value="allVideos" aria-label="allVideos mode">
+    All videos
+  </mat-button-toggle>
+  <mat-button-toggle id="favorite" name="favorite" value="favorite" aria-label="favorite mode">
+    Show favorite only
+  </mat-button-toggle>
+</mat-button-toggle-group>
 
-<mat-paginator [length]="length"
-              [pageSize]="pageSize"
-              [pageIndex]="pageIndex"
-              [pageSizeOptions]="pageSizeOptions"
-              (page)="onPageChanged($event)">
+<div class="margin-left float-right">
+  <button mat-raised-button color="warn" (click)="onDeleteAllVideosClick()">Delete all videos</button>
+</div>
+
+<div class="clear-both"></div>
+
+<div class="clear-both"></div>
+<div *ngFor="let video of videos" class="box-corners box-border float-left padding-around margin-right video-box-height"
+  [ngClass]="{'widthHalf': viewModeValue === 'metro', 'width100': viewModeValue === 'list'}">
+  <img src="{{video.image}}">
+  {{video.title}}
+  <br />
+  {{video.source}}
+  <br />
+  {{video.date | date: 'medium'}}
+  <br />
+  Liked {{video.likesCount}}, Played {{video.playesCount}}
+
+  <div class="float-right">
+    <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite_border" *ngIf="!video.fav"
+      (click)="onAddToFavClick(video)">favorite_border</mat-icon>
+    <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite" *ngIf="video.fav"
+      (click)="onRemoveFromFavClick(video)">favorite</mat-icon>
+    <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="play_circle_filled" (click)="onPlayClick(video)">
+      play_circle_filled</mat-icon>
+    <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="delete_sweep" (click)="onDeleteClick(video)">
+      delete_sweep</mat-icon>
+  </div>
+  <div class="clear-both"></div>
+
+</div>
+<div class="clear-both"></div>
+
+<div class="box-corners box-border width100 margin-top margin-bottom padding-around" *ngIf="length === 0">
+  No films in library
+</div>
+
+<mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions"
+  (page)="onPageChanged($event)">
 </mat-paginator>

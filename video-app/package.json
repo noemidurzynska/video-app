@@ -1,6 +1,8 @@
 {
   "name": "video-app",
   "version": "0.0.0",
+  "description": "Video-app library",
+  "license": "All right reserved for Noemi Durzynska",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",

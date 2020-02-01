@@ -5,7 +5,7 @@ export class VideoModel{
   public title: string;
   public image: string;
   public date: Date;
-  public rows: number;
-  public cols: number;
   public source: string;
+  public fav: boolean;
+  public urlCode: string;
 }

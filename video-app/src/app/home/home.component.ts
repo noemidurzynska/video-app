@@ -10,13 +10,15 @@ import { VideoModel, Source } from '../models';
 })
 export class HomeComponent implements OnInit {
 
-  length = 0;
-  pageSize = 10;
-  pageIndex = 0;
-  pageSizeOptions: number[] = [5, 10, 25, 100];
+  public length = 0;
+  public pageSize = 10;
+  public pageIndex = 0;
+  public pageSizeOptions: number[] = [5, 10, 25, 100];
   public videos: VideoModel[] = [];
   public allVideos: VideoModel[] = [];
-  viewModeValue = 'metro';
+  public viewModeValue = 'metro';
+  public showFavValue = false;
+  public favids: string[] = [];
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
@@ -29,7 +31,15 @@ export class HomeComponent implements OnInit {
     this.loadVideos();
   }
   private loadVideos(): void {
-    const videoList = this.storage.get('video-list');
+    let videoList = this.storage.get('video-list');
+    if (!videoList) {
+      return;
+    }
+
+    if (this.showFavValue) {
+      videoList = videoList.filter(x => this.favids.indexOf(x.id) !== -1);
+    }
+
     this.allVideos = [];
 
     videoList.forEach(video => {
@@ -46,13 +56,13 @@ export class HomeComponent implements OnInit {
       videoModel.date = video.date;
       videoModel.image = video.image;
       videoModel.likesCount = video.likesCount;
-      if (this.viewModeValue === 'metro') {
-        videoModel.cols = 2;
+      videoModel.urlCode = video.urlCode;
+      const found = this.favids.find(x => x === video.id);
+      if (found) {
+        videoModel.fav = true;
       } else {
-        videoModel.cols = 4;
+        videoModel.fav = false;
       }
-      videoModel.rows = 1;
-
       this.allVideos.push(videoModel);
     });
 
@@ -66,7 +76,49 @@ export class HomeComponent implements OnInit {
     this.sliceVideo();
   }
 
-  private sliceVideo(): void{
+  private sliceVideo(): void {
     this.videos = this.allVideos.slice(this.pageIndex * this.pageSize, this.pageIndex * this.pageSize + this.pageSize);
+  }
+
+  public onAddToFavClick(video: VideoModel): void {
+    this.favids.push(video.id);
+    this.loadVideos();
+  }
+
+  public onRemoveFromFavClick(video: VideoModel): void {
+    this.favids = this.favids.filter(x => x !== video.id);
+    this.loadVideos();
+  }
+
+  public onPlayClick(video: VideoModel): void {
+    let url = '';
+    if (video.source === 'Youtube') {
+      url = 'https://www.youtube.com/watch?v=' + video.urlCode;
+    } else {
+      url = 'https://vimeo.com/' + video.urlCode;
+    }
+
+    window.open(url, '_blank');
+  }
+
+  public onDeleteClick(video: VideoModel): void {
+    this.allVideos = this.allVideos.filter(x => x.id !== video.id);
+    this.storage.set('video-list', this.allVideos);
+    this.loadVideos();
+  }
+
+  public onFavoriteShow(showFav: any): void {
+    if (showFav.value === 'allVideos') {
+      this.showFavValue = false;
+    } else {
+      this.showFavValue = true;
+    }
+    this.loadVideos();
+  }
+
+  public onDeleteAllVideosClick(): void {
+    this.allVideos = [];
+    this.storage.set('video-list', this.allVideos);
+    this.loadVideos();
   }
 }
