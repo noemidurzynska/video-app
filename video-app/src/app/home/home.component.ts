@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { VideoModel, Source } from '../models';
+import { VideoModel, Source, Video } from '../models';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +16,7 @@ export class HomeComponent implements OnInit {
   public pageSizeOptions: number[] = [5, 10, 25, 100];
   public videos: VideoModel[] = [];
   public allVideos: VideoModel[] = [];
+  public videoList: Video[] = [];
   public viewModeValue = 'metro';
   public showFavValue = false;
   public favids: string[] = [];
@@ -31,6 +32,7 @@ export class HomeComponent implements OnInit {
     this.loadVideos();
   }
   private loadVideos(): void {
+    this.videoList = this.storage.get('video-list');
     let videoList = this.storage.get('video-list');
     if (!videoList) {
       return;
@@ -102,8 +104,8 @@ export class HomeComponent implements OnInit {
   }
 
   public onDeleteClick(video: VideoModel): void {
-    this.allVideos = this.allVideos.filter(x => x.id !== video.id);
-    this.storage.set('video-list', this.allVideos);
+    this.videoList = this.videoList.filter(x => x.id !== video.id);
+    this.storage.set('video-list', this.videoList);
     this.loadVideos();
   }
 
@@ -117,8 +119,8 @@ export class HomeComponent implements OnInit {
   }
 
   public onDeleteAllVideosClick(): void {
-    this.allVideos = [];
-    this.storage.set('video-list', this.allVideos);
+    this.videoList = [];
+    this.storage.set('video-list', this.videoList);
     this.loadVideos();
   }
 }
