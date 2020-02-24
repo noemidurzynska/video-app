@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { VideoModel, Source, Video } from '../models';
+import { Video, Source } from '../models';
 
 @Component({
   selector: 'app-home',
@@ -14,12 +14,10 @@ export class HomeComponent implements OnInit {
   public pageSize = 10;
   public pageIndex = 0;
   public pageSizeOptions: number[] = [5, 10, 25, 100];
-  public videos: VideoModel[] = [];
-  public allVideos: VideoModel[] = [];
-  public videoList: Video[] = [];
+  public videos: Video[] = [];
+  public allVideos: Video[] = [];
   public viewModeValue = 'metro';
   public showFavValue = false;
-  public favids: string[] = [];
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
@@ -31,45 +29,19 @@ export class HomeComponent implements OnInit {
     this.viewModeValue = viewMode.value;
     this.loadVideos();
   }
+
   private loadVideos(): void {
-    this.videoList = this.storage.get('video-list');
-    let videoList = this.storage.get('video-list');
-    if (!videoList) {
+    this.allVideos = this.storage.get('video-list');
+    if (!this.allVideos) {
       return;
     }
 
     if (this.showFavValue) {
-      videoList = videoList.filter(x => this.favids.indexOf(x.id) !== -1);
+      this.allVideos = this.allVideos.filter(x => x.fav);
     }
 
-    this.allVideos = [];
-
-    videoList.forEach(video => {
-      const videoModel = new VideoModel();
-      videoModel.id = video.id;
-      if (video.source === Source.Youtube) {
-        videoModel.source = 'Youtube';
-        videoModel.playesCount = video.playesCount;
-      } else if (video.source === Source.Vimeo) {
-        videoModel.source = 'Vimeo';
-        videoModel.playesCount = 'unknown';
-      }
-      videoModel.title = video.title;
-      videoModel.date = video.date;
-      videoModel.image = video.image;
-      videoModel.likesCount = video.likesCount;
-      videoModel.urlCode = video.urlCode;
-      const found = this.favids.find(x => x === video.id);
-      if (found) {
-        videoModel.fav = true;
-      } else {
-        videoModel.fav = false;
-      }
-      this.allVideos.push(videoModel);
-    });
-
+    this.length = this.allVideos.length;
     this.sliceVideo();
-    this.length = this.videos.length;
   }
 
   public onPageChanged(event: PageEvent): void {
@@ -82,19 +54,15 @@ export class HomeComponent implements OnInit {
     this.videos = this.allVideos.slice(this.pageIndex * this.pageSize, this.pageIndex * this.pageSize + this.pageSize);
   }
 
-  public onAddToFavClick(video: VideoModel): void {
-    this.favids.push(video.id);
+  public onChangeFavClick(video: Video, fav: boolean): void {
+    video.fav = fav;
+    this.storage.set('video-list', this.allVideos);
     this.loadVideos();
   }
 
-  public onRemoveFromFavClick(video: VideoModel): void {
-    this.favids = this.favids.filter(x => x !== video.id);
-    this.loadVideos();
-  }
-
-  public onPlayClick(video: VideoModel): void {
+  public onPlayClick(video: Video): void {
     let url = '';
-    if (video.source === 'Youtube') {
+    if (video.sourceType === Source.Youtube) {
       url = 'https://www.youtube.com/watch?v=' + video.urlCode;
     } else {
       url = 'https://vimeo.com/' + video.urlCode;
@@ -103,9 +71,9 @@ export class HomeComponent implements OnInit {
     window.open(url, '_blank');
   }
 
-  public onDeleteClick(video: VideoModel): void {
-    this.videoList = this.videoList.filter(x => x.id !== video.id);
-    this.storage.set('video-list', this.videoList);
+  public onDeleteClick(video: Video): void {
+    this.allVideos = this.allVideos.filter(x => x.id !== video.id);
+    this.storage.set('video-list', this.allVideos);
     this.loadVideos();
   }
 
@@ -119,8 +87,8 @@ export class HomeComponent implements OnInit {
   }
 
   public onDeleteAllVideosClick(): void {
-    this.videoList = [];
-    this.storage.set('video-list', this.videoList);
+    this.allVideos = [];
+    this.storage.set('video-list', this.allVideos);
     this.loadVideos();
   }
 }

@@ -34,7 +34,7 @@ export class AddComponent implements OnInit {
       .replace('https://www.', '')
       .replace('https://', '')
       .replace('youtube.com/watch?v=', '')
-      .replace('youtube.be/', '')
+      .replace('youtu.be/', '')
       .replace('vimeo.com/', '');
 
     if (platform.value === 'youtube') {
@@ -56,18 +56,21 @@ export class AddComponent implements OnInit {
       .subscribe((response: any) => {
 
         if (response.items.length === 0) {
+          // show error that film from Youtube is not found
           return;
         }
 
         const item = response.items[0];
 
         const video = new Video();
-        video.source = Source.Youtube;
+        video.sourceType = Source.Youtube;
+        video.source = 'Youtube';
         video.id = item.id;
         video.title = item.snippet.title;
         video.date = item.snippet.publishedAt;
         video.image = item.snippet.thumbnails.default.url;
         video.playesCount = item.statistics.viewCount;
+        video.playsCountDescription = item.statistics.viewCount;
         video.likesCount = item.statistics.likeCount;
         video.urlCode = videoId;
 
@@ -91,12 +94,14 @@ export class AddComponent implements OnInit {
       .subscribe((response: any) => {
 
         const video = new Video();
-        video.source = Source.Vimeo;
+        video.sourceType = Source.Vimeo;
+        video.source = 'Vimeo';
         video.id = response.resource_key;
         video.title = response.name;
         video.date = response.created_time;
         video.image = response.pictures.sizes[0].link;
         video.likesCount = response.metadata.connections.likes.total;
+        video.playsCountDescription = 'unknown';
         video.urlCode = videoId;
 
         this.saveVideo(video);
@@ -104,7 +109,10 @@ export class AddComponent implements OnInit {
         if (redirect) {
           this.router.navigate(['/home']);
         }
-      });
+      }
+        , (error: any) => {
+          // show error that film from vimeo is not found
+        });
   }
 
   private saveVideo(video: Video): void {

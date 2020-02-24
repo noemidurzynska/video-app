@@ -39,13 +39,13 @@
   <br />
   {{video.date | date: 'medium'}}
   <br />
-  Liked {{video.likesCount}}, Played {{video.playesCount}}
+  Liked {{video.likesCount}}, Played {{video.playsCountDescription}}
 
   <div class="float-right">
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite_border" *ngIf="!video.fav"
-      (click)="onAddToFavClick(video)">favorite_border</mat-icon>
+      (click)="onChangeFavClick(video, true)">favorite_border</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite" *ngIf="video.fav"
-      (click)="onRemoveFromFavClick(video)">favorite</mat-icon>
+      (click)="onChangeFavClick(video, false)">favorite</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="play_circle_filled" (click)="onPlayClick(video)">
       play_circle_filled</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="delete_sweep" (click)="onDeleteClick(video)">
