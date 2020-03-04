@@ -14,6 +14,7 @@ export class AddComponent implements OnInit {
 
   public apply: any = {};
   public passwords = new Passwords();
+  public showErrorMessage = false;
 
   constructor(private readonly http: HttpClient
     , private readonly router: Router
@@ -23,6 +24,8 @@ export class AddComponent implements OnInit {
   }
 
   public onAddClick(form: NgForm, platform: any): void {
+
+    this.showErrorMessage = false;
 
     if (form.form.invalid) {
       return;
@@ -56,7 +59,7 @@ export class AddComponent implements OnInit {
       .subscribe((response: any) => {
 
         if (response.items.length === 0) {
-          // show error that film from Youtube is not found
+          this.showErrorMessage = true;
           return;
         }
 
@@ -73,6 +76,7 @@ export class AddComponent implements OnInit {
         video.playsCountDescription = item.statistics.viewCount;
         video.likesCount = item.statistics.likeCount;
         video.urlCode = videoId;
+        video.creationDate = new Date();
 
         this.saveVideo(video);
 
@@ -103,6 +107,7 @@ export class AddComponent implements OnInit {
         video.likesCount = response.metadata.connections.likes.total;
         video.playsCountDescription = 'unknown';
         video.urlCode = videoId;
+        video.creationDate = new Date();
 
         this.saveVideo(video);
 
@@ -111,7 +116,7 @@ export class AddComponent implements OnInit {
         }
       }
         , (error: any) => {
-          // show error that film from vimeo is not found
+          this.showErrorMessage = true;
         });
   }
 

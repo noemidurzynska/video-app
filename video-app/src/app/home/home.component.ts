@@ -2,6 +2,8 @@ import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Video, Source } from '../models';
+import { MatDialog, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { PlayerComponent } from '../player/player.component';
 
 @Component({
   selector: 'app-home',
@@ -18,8 +20,9 @@ export class HomeComponent implements OnInit {
   public allVideos: Video[] = [];
   public viewModeValue = 'metro';
   public showFavValue = false;
+  public sortValue = 'asc';
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService) { }
+  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService, public dialog: MatDialog) { }
 
   ngOnInit() {
     this.loadVideos();
@@ -34,6 +37,12 @@ export class HomeComponent implements OnInit {
     this.allVideos = this.storage.get('video-list');
     if (!this.allVideos) {
       return;
+    }
+
+    if (this.sortValue === 'asc') {
+      this.allVideos.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else {
+      this.allVideos.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
     }
 
     if (this.showFavValue) {
@@ -61,14 +70,19 @@ export class HomeComponent implements OnInit {
   }
 
   public onPlayClick(video: Video): void {
-    let url = '';
+    let urlAdress = '';
     if (video.sourceType === Source.Youtube) {
-      url = 'https://www.youtube.com/watch?v=' + video.urlCode;
+      urlAdress = 'https://www.youtube.com/embed/' + video.urlCode;
     } else {
-      url = 'https://vimeo.com/' + video.urlCode;
+      urlAdress = 'https://player.vimeo.com/video/' + video.urlCode;
     }
 
-    window.open(url, '_blank');
+    this.dialog.open(PlayerComponent, {
+      data: {
+        title: video.title,
+        urlPlayer: urlAdress
+      }
+    });
   }
 
   public onDeleteClick(video: Video): void {
@@ -82,6 +96,15 @@ export class HomeComponent implements OnInit {
       this.showFavValue = false;
     } else {
       this.showFavValue = true;
+    }
+    this.loadVideos();
+  }
+
+  public onSortClick(sort: any): void {
+    if (sort.value === 'asc') {
+      this.sortValue = 'asc';
+    } else {
+      this.sortValue = 'desc';
     }
     this.loadVideos();
   }

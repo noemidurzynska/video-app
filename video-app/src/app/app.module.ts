@@ -19,7 +19,7 @@ import {MatCheckboxModule} from '@angular/material/checkbox';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatStepperModule} from '@angular/material/stepper';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-import {MatDialogModule} from '@angular/material/dialog';
+import {MatDialogModule, MAT_DIALOG_DEFAULT_OPTIONS} from '@angular/material/dialog';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatExpansionModule} from '@angular/material/expansion';
 import {MatGridListModule} from '@angular/material/grid-list';
@@ -43,12 +43,16 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
+import { PlayerComponent } from './player/player.component';
+import { SafePipe } from './pipes/safe.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    AddComponent
+    AddComponent,
+    PlayerComponent,
+    SafePipe
   ],
   imports: [
     BrowserModule,
@@ -92,7 +96,10 @@ import {MatTreeModule} from '@angular/material/tree';
     MatTooltipModule,
     MatTreeModule
   ],
-  providers: [],
+  providers: [ {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
+  entryComponents: [
+    PlayerComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

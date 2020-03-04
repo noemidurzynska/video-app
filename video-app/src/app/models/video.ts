@@ -12,4 +12,5 @@ export class Video {
   public source: string;
   public urlCode: string;
   public fav: boolean;
+  public creationDate: Date;
 }
