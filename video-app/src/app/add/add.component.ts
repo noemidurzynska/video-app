@@ -17,8 +17,8 @@ export class AddComponent implements OnInit {
   public showErrorMessage = false;
 
   constructor(private readonly http: HttpClient
-    , private readonly router: Router
-    , @Inject(LOCAL_STORAGE) private storage: StorageService) { }
+    ,         private readonly router: Router
+    ,         @Inject(LOCAL_STORAGE) private storage: StorageService) { }
 
   ngOnInit() {
   }

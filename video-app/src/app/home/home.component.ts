@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   public viewModeValue = 'metro';
   public showFavValue = false;
   public sortValue = 'asc';
+  public canCloseWindow = false;
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService, public dialog: MatDialog) { }
 
@@ -70,6 +71,11 @@ export class HomeComponent implements OnInit {
   }
 
   public onPlayClick(video: Video): void {
+
+    if (this.canCloseWindow) {
+        return;
+    }
+    this.canCloseWindow = true;
     let urlAdress = '';
     if (video.sourceType === Source.Youtube) {
       urlAdress = 'https://www.youtube.com/embed/' + video.urlCode;
@@ -82,6 +88,9 @@ export class HomeComponent implements OnInit {
         title: video.title,
         urlPlayer: urlAdress
       }
+    })
+    .afterClosed().subscribe(result => {
+      this.canCloseWindow = false;
     });
   }
 
