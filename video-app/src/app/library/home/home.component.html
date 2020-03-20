@@ -42,7 +42,7 @@
 <div class="clear-both"></div>
 <div *ngFor="let video of videos" class="box-corners box-border float-left padding-around margin-right video-box-height"
   [ngClass]="{'widthHalf': viewModeValue === 'metro', 'width100': viewModeValue === 'list'}">
-  <img src="{{video.image}}">
+  <img class="cursor-pointer" src="{{video.image}}" (click)="onPlayClick(video)">
   {{video.title}}
   <br />
   {{video.source}}
