@@ -1,8 +1,8 @@
-import { Injectable, Inject } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Video, Passwords, Source  } from '../models';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Router } from '@angular/router';
+import { StreamingPlatformService } from '../common/streamingPlatform.service';
 
 @Injectable()
 export class YoutubeService {
@@ -10,8 +10,8 @@ export class YoutubeService {
   public passwords = new Passwords();
 
   constructor( private readonly http: HttpClient
-    ,          @Inject(LOCAL_STORAGE) private storage: StorageService
-    ,          private readonly router: Router){}
+    ,          private readonly router: Router
+    ,          private readonly streamingPlatform: StreamingPlatformService ) {}
 
   public getYouTubeVideo(videoId: string, redirect: boolean, self: any): void {
 
@@ -42,23 +42,11 @@ export class YoutubeService {
         video.urlCode = videoId;
         video.creationDate = new Date();
 
-        this.saveVideo(video);
+        this.streamingPlatform.saveVideo(video);
 
         if (redirect) {
           this.router.navigate(['/home']);
         }
       });
-  }
-
-  public saveVideo(video: Video): void {
-
-    let videoList = this.storage.get('video-list');
-    if (videoList === undefined) {
-      videoList = new Array<Video>();
-    }
-
-    videoList.push(video);
-
-    this.storage.set('video-list', videoList);
   }
 }

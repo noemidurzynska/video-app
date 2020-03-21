@@ -1,13 +1,15 @@
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { YoutubeService } from './';
+import { YoutubeService, VimeoService, StreamingPlatformService } from './';
 
 @NgModule({
   imports: [
     HttpClientModule,
   ],
   providers: [
-    YoutubeService
+    YoutubeService,
+    VimeoService,
+    StreamingPlatformService,
   ]
 })
 export class CoreModule { }
