@@ -1,6 +1,8 @@
 import { Injectable, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Video, Passwords, Source  } from '../models';
+import { Observable, of } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
+import { Video, Passwords, Source } from '../models';
 import { Router } from '@angular/router';
 import { StreamingPlatformService } from '../common/streamingPlatform.service';
 
@@ -9,15 +11,15 @@ export class VimeoService {
 
   public passwords = new Passwords();
 
-  constructor( private readonly http: HttpClient
-    ,          private readonly router: Router
-    ,          private readonly streamingPlatform: StreamingPlatformService ) {}
+  constructor(private readonly http: HttpClient
+    ,         private readonly router: Router
+    ,         private readonly streamingPlatform: StreamingPlatformService) { }
 
-  public getVimeoVideo(videoId: string, redirect: boolean, self: any): void {
+  public getVideo(videoId: string): Observable<boolean> {
 
-      this.http.get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
-        .subscribe((response: any) => {
-
+    return this.http.get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
+      .pipe(
+        switchMap((response: any) => {
           const video = new Video();
           video.sourceType = Source.Vimeo;
           video.source = 'Vimeo';
@@ -32,14 +34,11 @@ export class VimeoService {
 
           this.streamingPlatform.saveVideo(video);
 
-          if (redirect) {
-            this.router.navigate(['/home']);
-          }
-        }
-          , (error: any) => {
-            self.showErrorMessage = true;
-          });
-    }
-
-
+          return of(false);
+        })
+        , catchError((error: any) => {
+          return of(true);
+        })
+      );
+  }
 }

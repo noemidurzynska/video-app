@@ -4,6 +4,7 @@ import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Video, Source } from '../../core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
+import { StreamingPlatformService } from 'src/app/core';
 
 @Component({
   selector: 'app-home',
@@ -23,7 +24,9 @@ export class HomeComponent implements OnInit {
   public sortValue = 'asc';
   public canCloseWindow = false;
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService, public dialog: MatDialog) { }
+  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService
+  ,           public dialog: MatDialog
+  ,           private readonly streamingPlatformService: StreamingPlatformService) { }
 
   ngOnInit() {
     this.loadVideos();
@@ -76,12 +79,8 @@ export class HomeComponent implements OnInit {
         return;
     }
     this.canCloseWindow = true;
-    let urlAdress = '';
-    if (video.sourceType === Source.Youtube) {
-      urlAdress = 'https://www.youtube.com/embed/' + video.urlCode;
-    } else {
-      urlAdress = 'https://player.vimeo.com/video/' + video.urlCode;
-    }
+
+    const urlAdress = this.streamingPlatformService.getUrlAddress(video.sourceType, video.urlCode);
 
     this.dialog.open(PlayerComponent, {
       data: {

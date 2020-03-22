@@ -1,6 +1,5 @@
-import { Component, Inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { switchMap, filter } from 'rxjs/operators';
+import { Component } from '@angular/core';
+import { switchMap } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Passwords } from '../../core/models';
@@ -17,8 +16,7 @@ export class AddComponent {
   public passwords = new Passwords();
   public showErrorMessage = false;
 
-  constructor(private readonly http: HttpClient
-    ,         private readonly router: Router
+  constructor(private readonly router: Router
     ,         private readonly youtubeService: YoutubeService
     ,         private readonly vimeoService: VimeoService
     ,         private readonly streamingPlatform: StreamingPlatformService) { }
@@ -32,28 +30,25 @@ export class AddComponent {
     }
 
     const videoId = this.streamingPlatform.extractIdentifier(this.apply.videoId);
-    if (platform.value === 'youtube') {
-      this.youtubeService.getYouTubeVideo(videoId)
-      .subscribe(result => {
-        this.showErrorMessage = result;
-        if (!this.showErrorMessage) {
-          this.router.navigate(['/home']);
-        }
-      });
-    } else if (platform.value === 'vimeo') {
-      this.vimeoService.getVimeoVideo(videoId, true, this);
-    }
+
+    this[platform.value + 'Service'].getVideo(videoId)
+    .subscribe((result: boolean) => {
+      this.showErrorMessage = result;
+      if (!this.showErrorMessage) {
+        this.router.navigate(['/home']);
+      }
+    });
   }
 
   public onAddDefaultClick(): void {
 
-    this.youtubeService.getYouTubeVideo('D2qREDVuGgQ')
+    this.youtubeService.getVideo('D2qREDVuGgQ')
       .pipe(
-        switchMap(() => this.youtubeService.getYouTubeVideo('5ZwdzeZ-T-s'))
-        , switchMap(() => this.youtubeService.getYouTubeVideo('ggbtTdcmqtI'))
+        switchMap(() => this.youtubeService.getVideo('5ZwdzeZ-T-s'))
+        , switchMap(() => this.youtubeService.getVideo('ggbtTdcmqtI'))
+        , switchMap(() => this.vimeoService.getVideo('172825105'))
       )
       .subscribe(() => {
-        this.vimeoService.getVimeoVideo('172825105', false, this);
         this.router.navigate(['/home']);
       });
   }

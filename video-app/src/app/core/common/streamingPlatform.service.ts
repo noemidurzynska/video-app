@@ -1,5 +1,5 @@
 import { Injectable, Inject } from '@angular/core';
-import { Video } from '../models';
+import { Video, Source } from '../models';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
 
 @Injectable()
@@ -27,5 +27,15 @@ export class StreamingPlatformService {
       .replace('youtu.be/', '')
       .replace('vimeo.com/', '');
     return videoId;
+  }
+
+  public getUrlAddress(source: Source, urlCode: string): string {
+    let urlAdress = '';
+    if (source === Source.Youtube) {
+      urlAdress = 'https://www.youtube.com/embed/' + urlCode;
+    } else {
+      urlAdress = 'https://player.vimeo.com/video/' + urlCode;
+    }
+    return urlAdress;
   }
 }

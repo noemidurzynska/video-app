@@ -15,7 +15,7 @@ export class YoutubeService {
     ,          private readonly router: Router
     ,          private readonly streamingPlatform: StreamingPlatformService ) {}
 
-  public getYouTubeVideo(videoId: string): Observable<any> {
+  public getVideo(videoId: string): Observable<any> {
 
     return this.http.get('https://www.googleapis.com/youtube/v3/videos?id='
       + videoId +
