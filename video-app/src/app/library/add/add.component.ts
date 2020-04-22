@@ -60,7 +60,7 @@ export class AddComponent {
     this.youtubeService.getVideo('3kptlAtiNV8')
       .pipe(
         switchMap(() => this.youtubeService.getVideo('3kptlAtiNV8-T-s'))
-        , switchMap(() => this.youtubeService.getVideo('gcShBujgsIQ&t=538s'))
+        , switchMap(() => this.youtubeService.getVideo('o0W_0MuvlwQ'))
         , switchMap(() => this.youtubeService.getVideo('BHnMItX2hEQ'))
         , switchMap(() => this.vimeoService.getVideo('172825105'))
       )

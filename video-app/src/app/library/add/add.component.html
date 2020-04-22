@@ -4,7 +4,7 @@
     <mat-form-field>
       <mat-label>Video identifier</mat-label>
       <input id="videoId" name="videoId" matInput [(ngModel)]="apply.videoId"  [formControl]="identifierFormControl" [errorStateMatcher]="matcher"
-      placeholder="https://www.youtube.com/watch?v=ft4jcPSLJfY" />
+      placeholder="Enter url address or Id" />
       <mat-error *ngIf="identifierFormControl.hasError('required')">
         Identifier is <strong>required</strong>
       </mat-error>
@@ -29,11 +29,9 @@
   <div class="margin-top">
     <button class="mat-raised-button" mat-raised-button color="warn" (click)="onAddClick(form, platform)">Add</button>
   </div>
-
-  <div class="margin-top">
+</form>
+ <div class="margin-top">
     <button class="mat-raised-button" mat-stroked-button color="warn" (click)="onAddDefaultClick()">Add defaults</button>
   </div>
-</form>
-
 
  <span *ngIf="showErrorMessage">Something went wrong. Check link adress.</span>
