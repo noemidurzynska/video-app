@@ -68,7 +68,13 @@ export class HomeComponent implements OnInit {
   }
 
   public onChangeFavClick(video: Video, fav: boolean): void {
-    video.fav = fav;
+    this.allVideos = this.storage.get('video-list');
+    const findVideo = this.allVideos.find(x => x.id === video.id);
+    if (!findVideo) {
+      return;
+    }
+
+    findVideo.fav = fav;
     this.storage.set('video-list', this.allVideos);
     this.loadVideos();
   }

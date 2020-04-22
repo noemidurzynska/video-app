@@ -1,10 +1,13 @@
-<form class="example-form" class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform)">
-  <div>
-    <label for="videoId">Video identifier</label>
-  </div>
+<form class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform)">
+
   <div>
     <mat-form-field>
-      <input id="videoId" name="videoId" matInput [(ngModel)]="apply.videoId" #videoId="ngModel" required />
+      <mat-label>Video identifier</mat-label>
+      <input id="videoId" name="videoId" matInput [(ngModel)]="apply.videoId"  [formControl]="identifierFormControl" [errorStateMatcher]="matcher"
+      placeholder="https://www.youtube.com/watch?v=ft4jcPSLJfY" />
+      <mat-error *ngIf="identifierFormControl.hasError('required')">
+        Identifier is <strong>required</strong>
+      </mat-error>
     </mat-form-field>
   </div>
   <div>
@@ -23,14 +26,13 @@
     </mat-button-toggle-group>
   </div>
 
-  <div class="margin-top float-left">
-    <button mat-raised-button color="warn" (click)="onAddClick(form, platform)">Add</button>
+  <div class="margin-top">
+    <button class="mat-raised-button" mat-raised-button color="warn" (click)="onAddClick(form, platform)">Add</button>
   </div>
 
-  <div class="margin-top float-right">
-    <button mat-stroked-button color="warn" (click)="onAddDefaultClick()">Add defaults</button>
+  <div class="margin-top">
+    <button class="mat-raised-button" mat-stroked-button color="warn" (click)="onAddDefaultClick()">Add defaults</button>
   </div>
-  <div class="clear-both"></div>
 </form>
 
 

@@ -14,6 +14,11 @@ export class StreamingPlatformService {
       videoList = new Array<Video>();
     }
 
+    const existingVideo = videoList.find(x => x.id === video.id);
+    if (existingVideo) {
+      return;
+    }
+
     videoList.push(video);
 
     this.storage.set('video-list', videoList);

@@ -5,46 +5,42 @@
   </div>
 </div>
 
+<div class="navbar-container">
 <mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom"
   (change)="onViewChange(viewMode)">
-  <mat-button-toggle id="metro" name="metro" value="metro" aria-label="Metro mode">
+  <mat-button-toggle class="mat-raised-button" id="metro" name="metro" value="metro" aria-label="Metro mode">
     Metro view
   </mat-button-toggle>
-  <mat-button-toggle id="list" name="list" value="list" aria-label="List mode">
+  <mat-button-toggle class="mat-raised-button" id="list" name="list" value="list" aria-label="List mode">
     List view
   </mat-button-toggle>
 </mat-button-toggle-group>
 
 <mat-button-toggle-group #showFav="matButtonToggleGroup" value="allVideos" class="margin-bottom margin-left"
   (change)="onFavoriteShow(showFav)">
-  <mat-button-toggle id="allVideos" name="allVideos" value="allVideos" aria-label="allVideos mode">
+  <mat-button-toggle class="mat-raised-button" id="allVideos" name="allVideos" value="allVideos" aria-label="allVideos mode">
     All videos
   </mat-button-toggle>
-  <mat-button-toggle id="favorite" name="favorite" value="favorite" aria-label="favorite mode">
+  <mat-button-toggle class="mat-raised-button" id="favorite" name="favorite" value="favorite" aria-label="favorite mode">
     Show favorite only
   </mat-button-toggle>
 </mat-button-toggle-group>
 
 <mat-button-toggle-group #sortButton="matButtonToggleGroup" value="asc" class="margin-bottom margin-left"
   (change)="onSortClick(sortButton)">
-  <mat-button-toggle id="asc" name="asc" value="asc" aria-label="asc mode">
+  <mat-button-toggle class="mat-raised-button" id="asc" name="asc" value="asc" aria-label="asc mode">
     Sort by the newest
   </mat-button-toggle>
-  <mat-button-toggle id="desc" name="desc" value="desc" aria-label="desc mode">
+  <mat-button-toggle class="mat-raised-button" id="desc" name="desc" value="desc" aria-label="desc mode">
     Sort by the oldest
   </mat-button-toggle>
 </mat-button-toggle-group>
-
-<div class="margin-left float-right">
-  <button mat-raised-button color="warn" (click)="onDeleteAllVideosClick()">Delete all videos</button>
 </div>
 
-<div class="clear-both"></div>
-
-<div class="clear-both"></div>
-<div *ngFor="let video of videos" class="box-corners box-border float-left padding-around margin-right video-box-height"
-  [ngClass]="{'widthHalf': viewModeValue === 'metro', 'width100': viewModeValue === 'list'}">
-  <img class="cursor-pointer" src="{{video.image}}" (click)="onPlayClick(video)">
+<div class="video-container">
+<div *ngFor="let video of videos" class="item box-corners box-border padding-around video-box-height margin-bottom"
+  [ngClass]="{'item1': viewModeValue === 'metro', 'item2': viewModeValue === 'list'}">
+  <img class="cursor-pointer video-thumbnail" src="{{video.image}}" (click)="onPlayClick(video)">
   {{video.title}}
   <br />
   {{video.source}}
@@ -55,7 +51,7 @@
   <br />
   Added to your video {{video.creationDate | date: 'medium'}}
 
-  <div class="float-right">
+  <div class="item">
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite_border" *ngIf="!video.fav"
       (click)="onChangeFavClick(video, true)">favorite_border</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite" *ngIf="video.fav"
@@ -65,10 +61,13 @@
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="delete_sweep" (click)="onDeleteClick(video)">
       delete_sweep</mat-icon>
   </div>
-  <div class="clear-both"></div>
 
 </div>
-<div class="clear-both"></div>
+</div>
+
+<div class="nav justify-content-end">
+  <button mat-raised-button color="warn" (click)="onDeleteAllVideosClick()">Delete all videos</button>
+</div>
 
 <div class="box-corners box-border width100 margin-top margin-bottom padding-around" *ngIf="length === 0">
   No films in library
@@ -77,3 +76,4 @@
 <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="pageIndex" [pageSizeOptions]="pageSizeOptions"
   (page)="onPageChanged($event)">
 </mat-paginator>
+
