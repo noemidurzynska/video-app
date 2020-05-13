@@ -3,8 +3,9 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { Video, Passwords, Source } from '../models';
-import { Router } from '@angular/router';
-import { StreamingPlatformService } from '../common/streamingPlatform.service';
+import { VideoState } from 'src/app/library/store/states/video.state';
+import * as VideoActions from '../../library/store/actions/video.actions';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class VimeoService {
@@ -12,8 +13,7 @@ export class VimeoService {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient
-    ,         private readonly router: Router
-    ,         private readonly streamingPlatform: StreamingPlatformService) { }
+    ,         private readonly store: Store<{ videos: VideoState }>) { }
 
   public getVideo(videoId: string): Observable<boolean> {
 
@@ -32,8 +32,7 @@ export class VimeoService {
           video.urlCode = videoId;
           video.creationDate = new Date();
 
-          this.streamingPlatform.saveVideo(video);
-
+          this.store.dispatch(VideoActions.BeginAddVideoAction ({ payload: video}));
           return of(false);
         })
         , catchError((error: any) => {
