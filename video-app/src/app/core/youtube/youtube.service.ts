@@ -3,9 +3,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Video, Passwords, Source } from '../models';
-import { VideoState } from 'src/app/library/store/states/video.state';
-import { Store } from '@ngrx/store';
-import * as VideoActions from '../../library/store/actions/video.actions';
+import { StreamingPlatformService } from '../';
 
 @Injectable()
 export class YoutubeService {
@@ -13,9 +11,11 @@ export class YoutubeService {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient
-    ,         private readonly store: Store<{ videos: VideoState }>) { }
+    ,         private readonly streamingPlatformService: StreamingPlatformService) { }
 
-  public getVideo(videoId: string): Observable<any> {
+  public getVideo(videoId: string): Observable<boolean> {
+
+    console.log('ngrx youtube test');
 
     return this.http.get('https://www.googleapis.com/youtube/v3/videos?id='
       + videoId +
@@ -44,7 +44,7 @@ export class YoutubeService {
           video.urlCode = videoId;
           video.creationDate = new Date();
 
-          this.store.dispatch(VideoActions.BeginAddVideoAction({ payload: video }));
+          this.streamingPlatformService.saveVideo(video);
           return of(false);
         })
       );

@@ -6,14 +6,23 @@ export const initialState = initializeState();
 
 const reducer = createReducer(
   initialState,
-  on(VideoActions.BeginAddVideoAction, (state: VideoState, { payload }) => {
-    return { ...state, Videos: [...state.Videos, payload], VideoError: null };
+  on(VideoActions.BeginYouTubeAddVideoAction, (state: VideoState, { payload }) => {
+    return { ...state, VideoId: payload, VideoError: null };
   }),
-  on(VideoActions.SuccesAddVideoAction, (state: VideoState, { payload }) => {
-    return { ...state, Videos: payload };
+  on(VideoActions.SuccesYouTubeAddVideoAction, (state: VideoState, { payload }) => {
+    return { ...state, ShowErrorMessage: payload };
   }),
-  on(VideoActions.ErrorAddVideoAction, (state: VideoState, error: Error) => {
-    return { ...state, VideoError: error };
+  on(VideoActions.ErrorYouTubeAddVideoAction, (state: VideoState, { payload }) => {
+    return { ...state, ShowErrorMessage: payload };
+  }),
+  on(VideoActions.BeginVimeoAddVideoAction, (state: VideoState, { payload }) => {
+    return { ...state, VideoId: payload, VideoError: null };
+  }),
+  on(VideoActions.SuccesVimeoAddVideoAction, (state: VideoState, { payload }) => {
+    return { ...state, ShowErrorMessage: payload };
+  }),
+  on(VideoActions.ErrorVimeoAddVideoAction, (state: VideoState, { payload }) => {
+    return { ...state, ShowErrorMessage: payload };
   }),
 );
 

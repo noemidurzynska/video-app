@@ -1,10 +1,8 @@
-import { Video } from '../../../core/models';
-
 export class VideoState {
-  Videos: Video[];
-  VideoError: Error;
+  VideoId: string;
+  ShowErrorMessage: boolean;
 }
 
 export const initializeState = (): VideoState => {
-  return { Videos: Array<Video>(), VideoError: null };
+  return { VideoId: '', ShowErrorMessage: false };
 };

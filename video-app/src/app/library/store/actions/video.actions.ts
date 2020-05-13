@@ -1,18 +1,31 @@
 import { createAction, props } from '@ngrx/store';
 
-import { Video } from '../../../core/models';
-
-export const BeginAddVideoAction = createAction(
-  '[Video] - Begin Add Video',
-  props<{ payload: Video }>()
+export const BeginYouTubeAddVideoAction = createAction(
+  '[Video] - Begin YouTube Add Video',
+  props<{ payload: string }>()
 );
 
-export const SuccesAddVideoAction = createAction(
-  '[Video] - Succes Add Video',
-  props<{ payload: Video[] }>()
+export const SuccesYouTubeAddVideoAction = createAction(
+  '[Video] - Succes YouTube Add Video',
+  props<{ payload: boolean }>()
 );
 
-export const ErrorAddVideoAction = createAction(
-  '[Video] - Error Add Video',
-  props<Error>()
+export const ErrorYouTubeAddVideoAction = createAction(
+  '[Video] - Error YouTube Add Video',
+  props<{ payload: boolean }>()
+);
+
+export const BeginVimeoAddVideoAction = createAction(
+  '[Video] - Begin Vimeo Add Video',
+  props<{ payload: string }>()
+);
+
+export const SuccesVimeoAddVideoAction = createAction(
+  '[Video] - Succes Vimeo Add Video',
+  props<{ payload: boolean }>()
+);
+
+export const ErrorVimeoAddVideoAction = createAction(
+  '[Video] - Error Vimeo Add Video',
+  props<{ payload: boolean }>()
 );

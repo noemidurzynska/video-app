@@ -1,16 +1,13 @@
 import { Injectable, Inject } from '@angular/core';
 import { Video, Source } from '../models';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
-import { Observable, of } from 'rxjs';
 
 @Injectable()
 export class StreamingPlatformService {
   constructor( @Inject (LOCAL_STORAGE) private storage: StorageService) {
-
   }
 
-  public saveVideoObservable(video: Video): Observable <Video[]> {
-    console.log('test ngrx');
+  public saveVideo(video: Video): void {
 
     let videoList = this.storage.get('video-list');
     if (videoList === undefined) {
@@ -19,16 +16,16 @@ export class StreamingPlatformService {
 
     const existingVideo = videoList.find(x => x.id === video.id);
     if (existingVideo) {
-      return of(videoList);
+      return;
     }
 
     videoList.push(video);
 
     this.storage.set('video-list', videoList);
-    return of(videoList);
   }
 
   public extractIdentifier(videoId: string): string {
+
     videoId = videoId
       .replace('https://www.', '')
       .replace('https://', '')

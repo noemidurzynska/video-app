@@ -1,29 +1,49 @@
 import { Injectable } from '@angular/core';
-import { StreamingPlatformService } from 'src/app/core';
+import { YoutubeService, VimeoService } from 'src/app/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as VideoActions from '../actions/video.actions';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { mergeMap, map } from 'rxjs/operators';
-import { Video } from '../../../core/models';
+import { mergeMap, map, catchError } from 'rxjs/operators';
 
 
 @Injectable()
 export class VideoEffects {
 
   constructor(
-    private readonly streamingPlatformService: StreamingPlatformService,
+    private readonly youTubeService: YoutubeService,
+    private readonly vimeoService: VimeoService,
     private readonly action$: Actions
   ) { }
 
-  AddVideo$: Observable<Action> = createEffect(() =>
+  AddYouTubeVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
-      ofType(VideoActions.BeginAddVideoAction),
+      ofType(VideoActions.BeginYouTubeAddVideoAction),
       mergeMap(action =>
-        this.streamingPlatformService.saveVideoObservable(action.payload)
+        this.youTubeService.getVideo(action.payload)
           .pipe(
-            map((data: Video[]) => {
-              return VideoActions.SuccesAddVideoAction({ payload: data });
+            map(data => {
+              return VideoActions.SuccesYouTubeAddVideoAction({ payload: data });
+            }),
+            catchError((error: Error) => {
+              return of(VideoActions.ErrorYouTubeAddVideoAction({ payload: true }));
+            })
+          )
+      )
+    )
+  );
+
+  AddVimeoVideo$: Observable<Action> = createEffect(() =>
+    this.action$.pipe(
+      ofType(VideoActions.BeginVimeoAddVideoAction),
+      mergeMap(action =>
+        this.vimeoService.getVideo(action.payload)
+          .pipe(
+            map(data => {
+              return VideoActions.SuccesVimeoAddVideoAction({ payload: data });
+            }),
+            catchError((error: Error) => {
+              return of(VideoActions.ErrorVimeoAddVideoAction({ payload: true }));
             })
           )
       )
