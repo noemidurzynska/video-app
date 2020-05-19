@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Video, Passwords, Source } from '../models';
-import { StreamingPlatformService } from '../';
+import { StreamingPlatformService } from '../common/streamingPlatform.service';
 
 @Injectable()
 export class YoutubeService {
@@ -14,8 +14,6 @@ export class YoutubeService {
     ,         private readonly streamingPlatformService: StreamingPlatformService) { }
 
   public getVideo(videoId: string): Observable<boolean> {
-
-    console.log('ngrx youtube test');
 
     return this.http.get('https://www.googleapis.com/youtube/v3/videos?id='
       + videoId +

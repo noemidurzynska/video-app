@@ -15,8 +15,6 @@ export class VimeoService {
 
   public getVideo(videoId: string): Observable<boolean> {
 
-    console.log('ngrx vimeo test');
-
     return this.http.get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
       .pipe(
         switchMap((response: any) => {

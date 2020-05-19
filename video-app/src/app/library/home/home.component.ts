@@ -1,10 +1,10 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { Video, Source } from '../../core/models';
+import { Video } from '../../core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
-import { StreamingPlatformService } from 'src/app/core';
+import { StreamingPlatformService } from 'src/app/core/common/streamingPlatform.service';
 
 @Component({
   selector: 'app-home',

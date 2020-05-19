@@ -25,6 +25,7 @@
     "@angular/router": "~9.1.2",
     "@ngrx/effects": "^9.1.2",
     "@ngrx/store": "^9.1.2",
+    "@w11k/ngx-componentdestroyed": "^5.0.2",
     "ngx-webstorage-service": "^4.1.0",
     "rxjs": "~6.5.5",
     "tslib": "^1.10.0",
