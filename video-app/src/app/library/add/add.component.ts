@@ -33,7 +33,6 @@ export class AddComponent  extends OnDestroyMixin implements OnInit {
   public passwords = new Passwords();
 
   public video$: Observable<VideoState>;
-  public videoSubscription: Subscription;
   public showErrorMessage = false;
 
   public identifierFormControl = new FormControl('', [
@@ -52,15 +51,12 @@ export class AddComponent  extends OnDestroyMixin implements OnInit {
     this.video$ = store.pipe(select('videos'));
      }
 
-    public ngOnInit(): void {
-      this.videoSubscription = this.video$
+  public ngOnInit(): void {
+
+    this.video$
         .pipe(
           map(state => {
             this.showErrorMessage = state.showErrorMessage;
-
-            // if (!this.showErrorMessage && state.videoId) {
-            //    this.router.navigate(['/home']);
-            //  }
           })
           , untilComponentDestroyed(this)
         )

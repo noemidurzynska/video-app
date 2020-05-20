@@ -6,7 +6,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import * as VideoActions from './video.actions';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Injectable()
@@ -15,7 +16,8 @@ export class VideoEffects {
   constructor(
     private readonly youTubeService: YoutubeService,
     private readonly vimeoService: VimeoService,
-    private readonly action$: Actions
+    private readonly action$: Actions,
+    private readonly router: Router
   ) { }
 
   AddYouTubeVideo$: Observable<Action> = createEffect(() =>
@@ -24,11 +26,16 @@ export class VideoEffects {
       mergeMap(action =>
         this.youTubeService.getVideo(action.videoId)
           .pipe(
-            map(data => {
-              return VideoActions.AddYouTubeVideoSuccess({ fail: data });
+            map(isWrong => {
+              return VideoActions.AddYouTubeVideoSuccess({ fail: isWrong });
             }),
             catchError((error: Error) => {
               return of(VideoActions.AddYouTubeVideoFail({ fail: true }));
+            }),
+            tap((state) => {
+              if (!state.fail) {
+                this.router.navigate(['/home']);
+              }
             })
           )
       )
@@ -41,11 +48,16 @@ export class VideoEffects {
       mergeMap(action =>
         this.vimeoService.getVideo(action.videoId)
           .pipe(
-            map(data => {
-              return VideoActions.AddVimeoVideoSuccess({ fail: data });
+            map(isWrong => {
+              return VideoActions.AddVimeoVideoSuccess({ fail: isWrong });
             }),
             catchError((error: Error) => {
               return of(VideoActions.AddVimeoVideoFail({ fail: true }));
+            }),
+            tap((state) => {
+              if (!state.fail) {
+                this.router.navigate(['/home']);
+              }
             })
           )
       )
