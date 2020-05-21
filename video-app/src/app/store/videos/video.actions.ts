@@ -1,13 +1,12 @@
 import { createAction, props } from '@ngrx/store';
 
-export const BeginYouTubeAddVideoAction = createAction(
-  '[Video] - Begin YouTube Add Video',
+export const AddYouTubeVideo = createAction(
+  '[Video] - Add YouTube Video',
   props<{ videoId: string }>()
 );
 
 export const AddYouTubeVideoSuccess = createAction(
   '[Video] - Add YouTube Video Success',
-  props<{ fail: boolean }>()
 );
 
 export const AddYouTubeVideoFail = createAction(
@@ -15,8 +14,8 @@ export const AddYouTubeVideoFail = createAction(
   props<{ fail: boolean }>()
 );
 
-export const BeginVimeoAddVideoAction = createAction(
-  '[Video] - Begin Vimeo Add Video',
+export const AddVimeoVideo = createAction(
+  '[Video] -  Add Vimeo Video',
   props<{ videoId: string }>()
 );
 

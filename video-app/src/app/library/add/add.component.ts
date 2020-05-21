@@ -13,6 +13,7 @@ import { VideoState } from '../../store/videos/video.state';
 import { Store, select } from '@ngrx/store';
 import { PlatformEnum } from 'src/app/core/enums/platform.enum';
 import {OnDestroyMixin, untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
+import { AddVideo } from 'src/app/core/models/addVideo';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -29,10 +30,10 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 })
 export class AddComponent  extends OnDestroyMixin implements OnInit {
 
-  public apply: any = {};
+  public addVideoData: AddVideo = new AddVideo();
   public passwords = new Passwords();
 
-  public video$: Observable<VideoState>;
+  public videos$: Observable<VideoState>;
   public showErrorMessage = false;
 
   public identifierFormControl = new FormControl('', [
@@ -48,37 +49,36 @@ export class AddComponent  extends OnDestroyMixin implements OnInit {
     ,         private readonly streamingPlatform: StreamingPlatformService
     ,         private readonly store: Store<{ videos: VideoState }>) {
     super();
-    this.video$ = store.pipe(select('videos'));
+    this.videos$ = store.pipe(select('videos'));
      }
 
   public ngOnInit(): void {
 
-    this.video$
+    this.videos$
         .pipe(
-          map(state => {
-            this.showErrorMessage = state.showErrorMessage;
-          })
-          , untilComponentDestroyed(this)
+          untilComponentDestroyed(this)
         )
-        .subscribe();
+        .subscribe(state => {
+          this.showErrorMessage = state.showErrorMessage;
+        });
     }
 
-  public onAddClick(form: NgForm, platform: any): void {
+  public onAddClick(form: NgForm, platform: PlatformEnum): void {
 
     this.showErrorMessage = false;
 
-    if (form.form.invalid || !this.apply.videoId) {
+    if (form.form.invalid || !this.addVideoData.videoId) {
       return;
     }
 
-    const videoId = this.streamingPlatform.extractIdentifier(this.apply.videoId);
+    const videoId = this.streamingPlatform.extractIdentifier(this.addVideoData.videoId);
 
-    if (platform.value === PlatformEnum.youTube) {
-      this.store.dispatch(VideoActions.BeginYouTubeAddVideoAction ({ videoId }));
+    if (platform === PlatformEnum.youTube) {
+      this.store.dispatch(VideoActions.AddYouTubeVideo ({ videoId }));
     }
 
-    if (platform.value === PlatformEnum.vimeo) {
-        this.store.dispatch(VideoActions.BeginVimeoAddVideoAction ({ videoId }));
+    if (platform === PlatformEnum.vimeo) {
+        this.store.dispatch(VideoActions.AddVimeoVideo ({ videoId }));
     }
   }
 

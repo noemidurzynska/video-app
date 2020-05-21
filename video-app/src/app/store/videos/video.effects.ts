@@ -22,20 +22,19 @@ export class VideoEffects {
 
   AddYouTubeVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
-      ofType(VideoActions.BeginYouTubeAddVideoAction),
+      ofType(VideoActions.AddYouTubeVideo),
       mergeMap(action =>
         this.youTubeService.getVideo(action.videoId)
           .pipe(
             map(isWrong => {
-              return VideoActions.AddYouTubeVideoSuccess({ fail: isWrong });
+              if (isWrong) {
+                return VideoActions.AddYouTubeVideoFail({fail: true});
+              } else {
+                 this.router.navigate(['/home']);
+              }
             }),
             catchError((error: Error) => {
               return of(VideoActions.AddYouTubeVideoFail({ fail: true }));
-            }),
-            tap((state) => {
-              if (!state.fail) {
-                this.router.navigate(['/home']);
-              }
             })
           )
       )
@@ -44,7 +43,7 @@ export class VideoEffects {
 
   AddVimeoVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
-      ofType(VideoActions.BeginVimeoAddVideoAction),
+      ofType(VideoActions.AddVimeoVideo),
       mergeMap(action =>
         this.vimeoService.getVideo(action.videoId)
           .pipe(

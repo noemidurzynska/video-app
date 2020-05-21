@@ -20,7 +20,6 @@ export class VimeoService {
         switchMap((response: any) => {
           const video = new Video();
           video.sourceType = Source.Vimeo;
-          video.source = 'Vimeo';
           video.id = response.resource_key;
           video.title = response.name;
           video.date = response.created_time;

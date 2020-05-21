@@ -37,7 +37,7 @@ export class StreamingPlatformService {
 
   public getUrlAddress(source: Source, urlCode: string): string {
     let urlAdress = '';
-    if (source === Source.Youtube) {
+    if (source === Source.YouTube) {
       urlAdress = 'https://www.youtube.com/embed/' + urlCode;
     } else {
       urlAdress = 'https://player.vimeo.com/video/' + urlCode;

@@ -7,16 +7,16 @@ export const initialState = initializeState();
 
 const reducer = createReducer(
   initialState,
-  on(VideoActions.BeginYouTubeAddVideoAction, (state: VideoState, { videoId }) => {
-    return { ...state, showErrorMessage: true, videoId };
-  }),
-  on(VideoActions.AddYouTubeVideoSuccess, (state: VideoState, { fail }) => {
-    return { ...state, showErrorMessage: fail };
+  on(VideoActions.AddYouTubeVideo, (state: VideoState, { videoId }) =>
+    ({ ...state, showErrorMessage: true, videoId })
+  ),
+  on(VideoActions.AddYouTubeVideoSuccess, (state: VideoState ) => {
+    return { ...state };
   }),
   on(VideoActions.AddYouTubeVideoFail, (state: VideoState, { fail }) => {
     return { ...state, showErrorMessage: fail };
   }),
-  on(VideoActions.BeginVimeoAddVideoAction, (state: VideoState, { videoId }) => {
+  on(VideoActions.AddVimeoVideo, (state: VideoState, { videoId }) => {
     return { ...state, showErrorMessage: true, videoId };
   }),
   on(VideoActions.AddVimeoVideoSuccess, (state: VideoState, { fail }) => {

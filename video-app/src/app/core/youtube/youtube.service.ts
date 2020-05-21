@@ -30,8 +30,7 @@ export class YoutubeService {
           const item = response.items[0];
 
           const video = new Video();
-          video.sourceType = Source.Youtube;
-          video.source = 'Youtube';
+          video.sourceType = Source.YouTube;
           video.id = item.id;
           video.title = item.snippet.title;
           video.date = item.snippet.publishedAt;

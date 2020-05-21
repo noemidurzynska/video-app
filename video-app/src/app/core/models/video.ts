@@ -9,7 +9,6 @@ export class Video {
   public image: string;
   public date: Date;
   public sourceType: Source;
-  public source: string;
   public urlCode: string;
   public fav: boolean;
   public creationDate: Date;

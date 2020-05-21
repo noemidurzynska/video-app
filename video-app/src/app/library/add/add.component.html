@@ -1,9 +1,9 @@
-<form class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform)">
+<form class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform.value)">
 
   <div>
     <mat-form-field>
       <mat-label>Video identifier</mat-label>
-      <input id="videoId" name="videoId" matInput [(ngModel)]="apply.videoId"  [formControl]="identifierFormControl" [errorStateMatcher]="matcher"
+      <input id="videoId" name="videoId" matInput [(ngModel)]="addVideoData.videoId"  [formControl]="identifierFormControl" [errorStateMatcher]="matcher"
       placeholder="Enter url address or Id" />
       <mat-error *ngIf="identifierFormControl.hasError('required')">
         Identifier is <strong>required</strong>
@@ -27,7 +27,7 @@
   </div>
 
   <div class="margin-top">
-    <button class="mat-raised-button" mat-raised-button color="warn" (click)="onAddClick(form, platform)">Add</button>
+    <button class="mat-raised-button" mat-raised-button color="warn" (click)="onAddClick(form, platform.value)">Add</button>
   </div>
 </form>
  <div class="margin-top">
