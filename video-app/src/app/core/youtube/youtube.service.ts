@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { Video, Passwords } from '../models';
 import { StreamingPlatformService } from '../common/streamingPlatform.service';
 import { PlatformEnum } from '../enums/platform.enum';
+import { AddVideoResult } from '../models/addVideoResult';
 
 @Injectable()
 export class YoutubeService {
@@ -14,7 +15,7 @@ export class YoutubeService {
   constructor(private readonly http: HttpClient
     ,         private readonly streamingPlatformService: StreamingPlatformService) { }
 
-  public getVideo(videoId: string): Observable<boolean> {
+  public getVideo(videoId: string): Observable<AddVideoResult> {
 
     return this.http.get('https://www.googleapis.com/youtube/v3/videos?id='
       + videoId +
@@ -23,27 +24,33 @@ export class YoutubeService {
       '&part=snippet,contentDetails,statistics,status')
       .pipe(
         switchMap((response: any) => {
+        const videoResult = new AddVideoResult();
 
-          if (response.items.length === 0) {
-            return of(true);
+
+        if (response.items.length === 0) {
+            videoResult.showErrorMessage = true;
+            return of(videoResult);
           }
 
-          const item = response.items[0];
+        const item = response.items[0];
 
-          const video = new Video();
-          video.sourceType = PlatformEnum.youTube;
-          video.id = item.id;
-          video.title = item.snippet.title;
-          video.date = item.snippet.publishedAt;
-          video.image = item.snippet.thumbnails.default.url;
-          video.playesCount = item.statistics.viewCount;
-          video.playsCountDescription = item.statistics.viewCount;
-          video.likesCount = item.statistics.likeCount;
-          video.urlCode = videoId;
-          video.creationDate = new Date();
+        const video = new Video();
+        video.sourceType = PlatformEnum.youTube;
+        video.id = item.id;
+        video.title = item.snippet.title;
+        video.date = item.snippet.publishedAt;
+        video.image = item.snippet.thumbnails.default.url;
+        video.playesCount = item.statistics.viewCount;
+        video.playsCountDescription = item.statistics.viewCount;
+        video.likesCount = item.statistics.likeCount;
+        video.urlCode = videoId;
+        video.creationDate = new Date();
 
-          this.streamingPlatformService.saveVideo(video);
-          return of(false);
+        const isExistingVideo = this.streamingPlatformService.saveVideo(video);
+        videoResult.showErrorMessage = false;
+        videoResult.video = video;
+        videoResult.isExistingVideo = isExistingVideo;
+        return of(videoResult);
         })
       );
   }

@@ -26,11 +26,11 @@ export class VideoEffects {
       mergeMap(action =>
         this.youTubeService.getVideo(action.videoId)
           .pipe(
-            map(isWrong => {
-              if (isWrong) {
-                return VideoActions.AddYouTubeVideoFail({fail: true});
+            map(videoResult => {
+              if (videoResult.showErrorMessage) {
+                return VideoActions.AddYouTubeVideoFail({ fail: true });
               } else {
-                 this.router.navigate(['/home']);
+                return VideoActions.AddYouTubeVideoSuccess(videoResult);
               }
             }),
             catchError((error: Error) => {
@@ -47,16 +47,16 @@ export class VideoEffects {
       mergeMap(action =>
         this.vimeoService.getVideo(action.videoId)
           .pipe(
-            map(isWrong => {
-              return VideoActions.AddVimeoVideoSuccess({ fail: isWrong });
+            map(videoResult => {
+              if (videoResult.showErrorMessage) {
+                return VideoActions.AddVimeoVideoFail({ fail: true });
+              } else {
+                return VideoActions.AddVimeoVideoSuccess(videoResult);
+              }
+
             }),
             catchError((error: Error) => {
               return of(VideoActions.AddVimeoVideoFail({ fail: true }));
-            }),
-            tap((state) => {
-              if (!state.fail) {
-                this.router.navigate(['/home']);
-              }
             })
           )
       )

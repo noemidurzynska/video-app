@@ -1,6 +1,7 @@
 import * as VideoActions from './video.actions';
 import { VideoState, initializeState } from './video.state';
 import { Action, createReducer, on } from '@ngrx/store';
+import { AddVideoResult } from 'src/app/core/models/addVideoResult';
 
 
 export const initialState = initializeState();
@@ -10,8 +11,12 @@ const reducer = createReducer(
   on(VideoActions.AddYouTubeVideo, (state: VideoState, { videoId }) =>
     ({ ...state, showErrorMessage: true, videoId })
   ),
-  on(VideoActions.AddYouTubeVideoSuccess, (state: VideoState ) => {
-    return { ...state };
+  on(VideoActions.AddYouTubeVideoSuccess, (state: VideoState, videoResult: AddVideoResult ) => {
+    const videos = state.videoList.slice();
+    if (!videoResult.isExistingVideo) {
+      videos.push(videoResult.video);
+    }
+    return { ...state, videoList: videos, showErrorMessage: false};
   }),
   on(VideoActions.AddYouTubeVideoFail, (state: VideoState, { fail }) => {
     return { ...state, showErrorMessage: fail };
@@ -19,12 +24,22 @@ const reducer = createReducer(
   on(VideoActions.AddVimeoVideo, (state: VideoState, { videoId }) => {
     return { ...state, showErrorMessage: true, videoId };
   }),
-  on(VideoActions.AddVimeoVideoSuccess, (state: VideoState, { fail }) => {
-    return { ...state, showErrorMessage: fail };
+  on(VideoActions.AddVimeoVideoSuccess, (state: VideoState, videoResult: AddVideoResult  ) => {
+    const videos = state.videoList.slice();
+    if (!videoResult.isExistingVideo) {
+      videos.push(videoResult.video);
+    }
+    return { ...state, videoList: videos, showErrorMessage: false};
   }),
   on(VideoActions.AddVimeoVideoFail, (state: VideoState, { fail }) => {
     return { ...state, showErrorMessage: fail };
   }),
+  on(VideoActions.SetVideos, (state: VideoState, { videos }) => {
+    return { ...state, videoList: videos};
+  }),
+  on(VideoActions.GetVideos, (state: VideoState) => {
+    return { ...state };
+  })
 );
 
 export function VideoReducer(state: VideoState | undefined, action: Action) {

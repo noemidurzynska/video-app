@@ -6,6 +6,11 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
 import { StreamingPlatformService } from 'src/app/core/common/streamingPlatform.service';
 import { PlayerVideoData } from 'src/app/core/models/playerVideoData';
+import { VideoState } from 'src/app/store/videos/video.state';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import * as VideoActions from '../../store/videos/video.actions';
+
 
 @Component({
   selector: 'app-home',
@@ -24,38 +29,52 @@ export class HomeComponent implements OnInit {
   public showFavValue = false;
   public sortValue = 'asc';
   public canCloseWindow = false;
+  public videos$: Observable<VideoState>;
+
+
 
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService
   ,           public dialog: MatDialog
-  ,           private readonly streamingPlatformService: StreamingPlatformService) { }
+  ,           private readonly streamingPlatformService: StreamingPlatformService
+  ,           private readonly store: Store<{videos: VideoState}>
+  ) {
+    this.videos$ = store.select('videos');
+  }
 
   ngOnInit() {
-    this.loadVideos();
+    this.store.dispatch(VideoActions.SetVideos({ videos: this.storage.get('video-list')}));
+
+    this.videos$.subscribe(store  => {
+      this.storage.set('video-list', store.videoList);
+      this.allVideos = store.videoList;
+      if (!this.allVideos) {
+        return;
+      }
+
+      if (this.sortValue === 'asc') {
+        this.allVideos = this.allVideos.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+      } else {
+        this.allVideos = this.allVideos.slice().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+      }
+
+      if (this.showFavValue) {
+        this.allVideos = this.allVideos.filter(x => x.fav);
+      }
+
+      this.length = this.allVideos.length;
+      this.sliceVideo();
+    }
+      );
   }
 
   public onViewChange(viewMode: string): void {
     this.viewModeValue = viewMode;
-    this.loadVideos();
+    this.store.dispatch(VideoActions.GetVideos());
   }
 
   private loadVideos(): void {
     this.allVideos = this.storage.get('video-list');
-    if (!this.allVideos) {
-      return;
-    }
 
-    if (this.sortValue === 'asc') {
-      this.allVideos.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-    } else {
-      this.allVideos.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-    }
-
-    if (this.showFavValue) {
-      this.allVideos = this.allVideos.filter(x => x.fav);
-    }
-
-    this.length = this.allVideos.length;
-    this.sliceVideo();
   }
 
   public onPageChanged(event: PageEvent): void {
@@ -76,8 +95,7 @@ export class HomeComponent implements OnInit {
     }
 
     findVideo.fav = fav;
-    this.storage.set('video-list', this.allVideos);
-    this.loadVideos();
+    this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 
   public onPlayClick(video: Video): void {
@@ -102,8 +120,7 @@ export class HomeComponent implements OnInit {
 
   public onDeleteClick(video: Video): void {
     this.allVideos = this.allVideos.filter(x => x.id !== video.id);
-    this.storage.set('video-list', this.allVideos);
-    this.loadVideos();
+    this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 
   public onFavoriteShow(showFav: string): void {
@@ -112,7 +129,7 @@ export class HomeComponent implements OnInit {
     } else {
       this.showFavValue = true;
     }
-    this.loadVideos();
+    this.store.dispatch(VideoActions.GetVideos());
   }
 
   public onSortClick(sort: string): void {
@@ -121,12 +138,11 @@ export class HomeComponent implements OnInit {
     } else {
       this.sortValue = 'desc';
     }
-    this.loadVideos();
+    this.store.dispatch(VideoActions.GetVideos());
   }
 
   public onDeleteAllVideosClick(): void {
     this.allVideos = [];
-    this.storage.set('video-list', this.allVideos);
-    this.loadVideos();
+    this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 }

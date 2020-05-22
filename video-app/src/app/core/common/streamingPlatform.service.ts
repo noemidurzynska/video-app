@@ -8,7 +8,7 @@ export class StreamingPlatformService {
   constructor( @Inject (LOCAL_STORAGE) private storage: StorageService) {
   }
 
-  public saveVideo(video: Video): void {
+  public saveVideo(video: Video): boolean {
 
     let videoList = this.storage.get('video-list');
     if (videoList === undefined) {
@@ -17,12 +17,13 @@ export class StreamingPlatformService {
 
     const existingVideo = videoList.find(x => x.id === video.id);
     if (existingVideo) {
-      return;
+      return existingVideo;
     }
 
     videoList.push(video);
 
     this.storage.set('video-list', videoList);
+    return existingVideo;
   }
 
   public extractIdentifier(videoId: string): string {
