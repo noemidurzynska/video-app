@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import { Video, Passwords, Source } from '../models';
+import { Video, Passwords } from '../models';
 import { StreamingPlatformService } from '../common/streamingPlatform.service';
+import { PlatformEnum } from '../enums/platform.enum';
 
 @Injectable()
 export class VimeoService {
@@ -19,7 +20,7 @@ export class VimeoService {
       .pipe(
         switchMap((response: any) => {
           const video = new Video();
-          video.sourceType = Source.Vimeo;
+          video.sourceType = PlatformEnum.vimeo;
           video.id = response.resource_key;
           video.title = response.name;
           video.date = response.created_time;
@@ -32,7 +33,7 @@ export class VimeoService {
           this.streamingPlatformService.saveVideo(video);
           return of(false);
         })
-        , catchError((error: any) => {
+        , catchError(() => {
           return of(true);
         })
       );

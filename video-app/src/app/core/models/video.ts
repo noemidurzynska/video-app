@@ -1,4 +1,4 @@
-import { Source } from './source.enum';
+import { PlatformEnum } from '../enums/platform.enum';
 
 export class Video {
   public id: string;
@@ -8,7 +8,7 @@ export class Video {
   public title: string;
   public image: string;
   public date: Date;
-  public sourceType: Source;
+  public sourceType: PlatformEnum;
   public urlCode: string;
   public fav: boolean;
   public creationDate: Date;

@@ -7,7 +7,7 @@
 
 <div class="navbar-container">
 <mat-button-toggle-group #viewMode="matButtonToggleGroup" value="metro" class="margin-bottom"
-  (change)="onViewChange(viewMode)">
+  (change)="onViewChange(viewMode.value)">
   <mat-button-toggle class="mat-raised-button" id="metro" name="metro" value="metro" aria-label="Metro mode">
     Metro view
   </mat-button-toggle>
@@ -17,7 +17,7 @@
 </mat-button-toggle-group>
 
 <mat-button-toggle-group #showFav="matButtonToggleGroup" value="allVideos" class="margin-bottom margin-left"
-  (change)="onFavoriteShow(showFav)">
+  (change)="onFavoriteShow(showFav.value)">
   <mat-button-toggle class="mat-raised-button" id="allVideos" name="allVideos" value="allVideos" aria-label="allVideos mode">
     All videos
   </mat-button-toggle>
@@ -26,8 +26,8 @@
   </mat-button-toggle>
 </mat-button-toggle-group>
 
-<mat-button-toggle-group #sortButton="matButtonToggleGroup" value="asc" class="margin-bottom margin-left"
-  (change)="onSortClick(sortButton)">
+<mat-button-toggle-group #sort="matButtonToggleGroup" value="asc" class="margin-bottom margin-left"
+  (change)="onSortClick(sort.value)">
   <mat-button-toggle class="mat-raised-button" id="asc" name="asc" value="asc" aria-label="asc mode">
     Sort by the newest
   </mat-button-toggle>

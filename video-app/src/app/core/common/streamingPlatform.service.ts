@@ -1,6 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
-import { Video, Source } from '../models';
+import { Video } from '../models';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
+import { PlatformEnum } from '../enums/platform.enum';
 
 @Injectable()
 export class StreamingPlatformService {
@@ -35,9 +36,9 @@ export class StreamingPlatformService {
     return videoId;
   }
 
-  public getUrlAddress(source: Source, urlCode: string): string {
+  public getUrlAddress(source: PlatformEnum, urlCode: string): string {
     let urlAdress = '';
-    if (source === Source.YouTube) {
+    if (source === PlatformEnum.youTube) {
       urlAdress = 'https://www.youtube.com/embed/' + urlCode;
     } else {
       urlAdress = 'https://player.vimeo.com/video/' + urlCode;

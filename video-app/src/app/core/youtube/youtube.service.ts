@@ -2,8 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { Video, Passwords, Source } from '../models';
+import { Video, Passwords } from '../models';
 import { StreamingPlatformService } from '../common/streamingPlatform.service';
+import { PlatformEnum } from '../enums/platform.enum';
 
 @Injectable()
 export class YoutubeService {
@@ -30,7 +31,7 @@ export class YoutubeService {
           const item = response.items[0];
 
           const video = new Video();
-          video.sourceType = Source.YouTube;
+          video.sourceType = PlatformEnum.youTube;
           video.id = item.id;
           video.title = item.snippet.title;
           video.date = item.snippet.publishedAt;

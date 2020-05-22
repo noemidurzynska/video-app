@@ -1,5 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { PlayerVideoData } from 'src/app/core/models/playerVideoData';
 
 @Component({
   selector: 'app-player',
@@ -8,7 +9,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 })
 export class PlayerComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: any, public dialogRef: MatDialogRef<PlayerComponent>) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: PlayerVideoData, public dialogRef: MatDialogRef<PlayerComponent>) { }
 
   public onCloseClick(): void {
     this.dialogRef.close();

@@ -5,6 +5,7 @@ import { Video } from '../../core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
 import { StreamingPlatformService } from 'src/app/core/common/streamingPlatform.service';
+import { PlayerVideoData } from 'src/app/core/models/playerVideoData';
 
 @Component({
   selector: 'app-home',
@@ -32,8 +33,8 @@ export class HomeComponent implements OnInit {
     this.loadVideos();
   }
 
-  public onViewChange(viewMode: any): void {
-    this.viewModeValue = viewMode.value;
+  public onViewChange(viewMode: string): void {
+    this.viewModeValue = viewMode;
     this.loadVideos();
   }
 
@@ -88,11 +89,11 @@ export class HomeComponent implements OnInit {
 
     const urlAdress = this.streamingPlatformService.getUrlAddress(video.sourceType, video.urlCode);
 
+    const playerVideoData = new PlayerVideoData();
+    playerVideoData.title = video.title;
+    playerVideoData.urlPlayer = urlAdress;
     this.dialog.open(PlayerComponent, {
-      data: {
-        title: video.title,
-        urlPlayer: urlAdress
-      }
+      data: playerVideoData
     })
     .afterClosed().subscribe(result => {
       this.canCloseWindow = false;
@@ -105,8 +106,8 @@ export class HomeComponent implements OnInit {
     this.loadVideos();
   }
 
-  public onFavoriteShow(showFav: any): void {
-    if (showFav.value === 'allVideos') {
+  public onFavoriteShow(showFav: string): void {
+    if (showFav === 'allVideos') {
       this.showFavValue = false;
     } else {
       this.showFavValue = true;
@@ -114,8 +115,8 @@ export class HomeComponent implements OnInit {
     this.loadVideos();
   }
 
-  public onSortClick(sort: any): void {
-    if (sort.value === 'asc') {
+  public onSortClick(sort: string): void {
+    if (sort === 'asc') {
       this.sortValue = 'asc';
     } else {
       this.sortValue = 'desc';
