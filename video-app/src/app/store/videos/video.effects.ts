@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
-import { YoutubeService } from 'src/app/core/youtube/youtube.service';
-import { VimeoService } from 'src/app/core/vimeo/vimeo.service';
+import { YoutubeService } from '@core/youtube/youtube.service';
+import { VimeoService } from '@core/vimeo/vimeo.service';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import * as VideoActions from './video.actions';
+import * as VideoActions from '@store/videos/video.actions';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
-import { mergeMap, map, catchError, tap } from 'rxjs/operators';
+import { mergeMap, map, catchError} from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 

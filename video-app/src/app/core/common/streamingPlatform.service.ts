@@ -1,7 +1,7 @@
 import { Injectable, Inject } from '@angular/core';
-import { Video } from '../models';
+import { Video } from '@core/models';
 import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
-import { PlatformEnum } from '../enums/platform.enum';
+import { PlatformEnum } from '@core/enums/platform.enum';
 
 @Injectable()
 export class StreamingPlatformService {
@@ -15,7 +15,7 @@ export class StreamingPlatformService {
       videoList = new Array<Video>();
     }
 
-    const existingVideo = videoList.find(x => x.id === video.id);
+    const existingVideo = videoList.find(videoElement => videoElement.id === video.id);
     if (existingVideo) {
       return existingVideo;
     }

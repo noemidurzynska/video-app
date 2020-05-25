@@ -1,6 +1,6 @@
 import { createAction, props } from '@ngrx/store';
-import { Video } from 'src/app/core/models';
-import { AddVideoResult } from 'src/app/core/models/addVideoResult';
+import { Video } from '@core/models';
+import { AddVideoResult } from '@core/models/addVideoResult';
 
 export const AddYouTubeVideo = createAction(
   '[Video] - Add YouTube Video',

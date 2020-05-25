@@ -1,19 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Passwords } from '../../core/models';
-import { YoutubeService } from '../../core/youtube/youtube.service';
-import { VimeoService } from '../../core/vimeo/vimeo.service';
-import { StreamingPlatformService } from '../../core/common/streamingPlatform.service';
+import { Passwords } from '@core/models';
+import { YoutubeService } from '@core/youtube/youtube.service';
+import { VimeoService } from '@core/vimeo/vimeo.service';
+import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { ErrorStateMatcher } from '@angular/material/core';
-import * as VideoActions from '../../store/videos/video.actions';
-import { VideoState } from '../../store/videos/video.state';
+import * as VideoActions from '@store/videos/video.actions';
+import { VideoState } from '@store/videos/video.state';
 import { Store, select } from '@ngrx/store';
-import { PlatformEnum } from 'src/app/core/enums/platform.enum';
+import { PlatformEnum } from '@core/enums/platform.enum';
 import {OnDestroyMixin, untilComponentDestroyed} from '@w11k/ngx-componentdestroyed';
-import { AddVideo } from 'src/app/core/models/addVideo';
+import { AddVideo } from '@core/models/addVideo';
+import { VideoStateModel } from '@core/models/videoState.model';
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -47,7 +48,7 @@ export class AddComponent  extends OnDestroyMixin implements OnInit {
     ,         private readonly youtubeService: YoutubeService
     ,         private readonly vimeoService: VimeoService
     ,         private readonly streamingPlatform: StreamingPlatformService
-    ,         private readonly store: Store<{ videos: VideoState }>) {
+    ,         private readonly store: Store<VideoStateModel>) {
     super();
     this.videos$ = store.pipe(select('videos'));
      }

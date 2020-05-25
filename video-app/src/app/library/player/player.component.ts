@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { PlayerVideoData } from 'src/app/core/models/playerVideoData';
+import { PlayerVideoData } from '@core/models/playerVideoData';
 
 @Component({
   selector: 'app-player',

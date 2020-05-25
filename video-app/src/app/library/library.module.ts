@@ -4,7 +4,7 @@ import { HomeComponent } from './home/home.component';
 import { AddComponent } from './add/add.component';
 
 import { PlayerComponent } from './player/player.component';
-import { SharedModule } from '../shared/shared.module';
+import { SharedModule } from '@shared/shared.module';
 
 
 @NgModule({

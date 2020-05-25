@@ -1,15 +1,17 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
-import { Video } from '../../core/models';
+import { Video } from '@core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
-import { StreamingPlatformService } from 'src/app/core/common/streamingPlatform.service';
-import { PlayerVideoData } from 'src/app/core/models/playerVideoData';
-import { VideoState } from 'src/app/store/videos/video.state';
+import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
+import { PlayerVideoData } from '@core/models/playerVideoData';
+import { VideoState } from '@store/videos/video.state';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import * as VideoActions from '../../store/videos/video.actions';
+import * as VideoActions from '@store/videos/video.actions';
+import { VideoStateModel } from '@core/models/videoState.model';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 
 
 @Component({
@@ -17,7 +19,7 @@ import * as VideoActions from '../../store/videos/video.actions';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent extends OnDestroyMixin implements OnInit {
 
   public length = 0;
   public pageSize = 10;
@@ -36,15 +38,20 @@ export class HomeComponent implements OnInit {
   constructor(@Inject(LOCAL_STORAGE) private storage: StorageService
   ,           public dialog: MatDialog
   ,           private readonly streamingPlatformService: StreamingPlatformService
-  ,           private readonly store: Store<{videos: VideoState}>
+  ,           private readonly store: Store<VideoStateModel>
   ) {
+    super();
     this.videos$ = store.select('videos');
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.store.dispatch(VideoActions.SetVideos({ videos: this.storage.get('video-list')}));
 
-    this.videos$.subscribe(store  => {
+    this.videos$
+    .pipe (
+      untilComponentDestroyed(this)
+    )
+    .subscribe(store  => {
       this.storage.set('video-list', store.videoList);
       this.allVideos = store.videoList;
       if (!this.allVideos) {
@@ -58,7 +65,7 @@ export class HomeComponent implements OnInit {
       }
 
       if (this.showFavValue) {
-        this.allVideos = this.allVideos.filter(x => x.fav);
+        this.allVideos = this.allVideos.filter(videoElement => videoElement.fav);
       }
 
       this.length = this.allVideos.length;
@@ -72,11 +79,6 @@ export class HomeComponent implements OnInit {
     this.store.dispatch(VideoActions.GetVideos());
   }
 
-  private loadVideos(): void {
-    this.allVideos = this.storage.get('video-list');
-
-  }
-
   public onPageChanged(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
@@ -88,8 +90,8 @@ export class HomeComponent implements OnInit {
   }
 
   public onChangeFavClick(video: Video, fav: boolean): void {
-    this.allVideos = this.storage.get('video-list');
-    const findVideo = this.allVideos.find(x => x.id === video.id);
+    const allVideos = this.storage.get('video-list');
+    const findVideo = allVideos.find(videoElement => videoElement.id === video.id);
     if (!findVideo) {
       return;
     }
@@ -113,13 +115,14 @@ export class HomeComponent implements OnInit {
     this.dialog.open(PlayerComponent, {
       data: playerVideoData
     })
-    .afterClosed().subscribe(result => {
+    .afterClosed().subscribe(() => {
       this.canCloseWindow = false;
     });
   }
 
   public onDeleteClick(video: Video): void {
-    this.allVideos = this.allVideos.filter(x => x.id !== video.id);
+    const allVideos = this.storage.get('video-list');
+    this.allVideos = allVideos.filter(videoElement => videoElement.id !== video.id);
     this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 

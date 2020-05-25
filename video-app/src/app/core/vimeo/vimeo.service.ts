@@ -2,10 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import { Video, Passwords } from '../models';
-import { StreamingPlatformService } from '../common/streamingPlatform.service';
-import { PlatformEnum } from '../enums/platform.enum';
-import { AddVideoResult } from '../models/addVideoResult';
+import { Video, Passwords } from '@core/models';
+import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
+import { PlatformEnum } from '@core/enums/platform.enum';
+import { AddVideoResult } from '@core/models/addVideoResult';
 
 @Injectable()
 export class VimeoService {

@@ -1,4 +1,4 @@
-import { PlatformEnum } from '../enums/platform.enum';
+import { PlatformEnum } from '@core/enums/platform.enum';
 
 export class Video {
   public id: string;
