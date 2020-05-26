@@ -15,7 +15,7 @@ export class VimeoService {
   constructor(private readonly http: HttpClient
     ,         private readonly streamingPlatformService: StreamingPlatformService) { }
 
-  public getVideo(videoId: string): Observable<AddVideoResult> {
+  public addVideo(videoId: string): Observable<AddVideoResult> {
 
     return this.http.get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
       .pipe(

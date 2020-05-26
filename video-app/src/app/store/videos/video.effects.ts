@@ -22,19 +22,19 @@ export class VideoEffects {
 
   AddYouTubeVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
-      ofType(VideoActions.AddYouTubeVideo),
+      ofType(VideoActions.addYouTubeVideo),
       mergeMap(action =>
-        this.youTubeService.getVideo(action.videoId)
+        this.youTubeService.addVideo(action.videoId)
           .pipe(
             map(videoResult => {
               if (videoResult.showErrorMessage) {
-                return VideoActions.AddYouTubeVideoFail({ fail: true });
+                return VideoActions.addYouTubeVideoFail({ fail: true });
               } else {
-                return VideoActions.AddYouTubeVideoSuccess(videoResult);
+                return VideoActions.addYouTubeVideoSuccess(videoResult);
               }
             }),
             catchError((error: Error) => {
-              return of(VideoActions.AddYouTubeVideoFail({ fail: true }));
+              return of(VideoActions.addYouTubeVideoFail({ fail: true }));
             })
           )
       )
@@ -43,20 +43,20 @@ export class VideoEffects {
 
   AddVimeoVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
-      ofType(VideoActions.AddVimeoVideo),
+      ofType(VideoActions.addVimeoVideo),
       mergeMap(action =>
-        this.vimeoService.getVideo(action.videoId)
+        this.vimeoService.addVideo(action.videoId)
           .pipe(
             map(videoResult => {
               if (videoResult.showErrorMessage) {
-                return VideoActions.AddVimeoVideoFail({ fail: true });
+                return VideoActions.addVimeoVideoFail({ fail: true });
               } else {
-                return VideoActions.AddVimeoVideoSuccess(videoResult);
+                return VideoActions.addVimeoVideoSuccess(videoResult);
               }
 
             }),
             catchError((error: Error) => {
-              return of(VideoActions.AddVimeoVideoFail({ fail: true }));
+              return of(VideoActions.addVimeoVideoFail({ fail: true }));
             })
           )
       )

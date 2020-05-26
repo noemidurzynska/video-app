@@ -1,11 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
 import { Passwords } from '@core/models';
-import { YoutubeService } from '@core/youtube/youtube.service';
-import { VimeoService } from '@core/vimeo/vimeo.service';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { ErrorStateMatcher } from '@angular/material/core';
 import * as VideoActions from '@store/videos/video.actions';
@@ -44,10 +40,7 @@ export class AddComponent  extends OnDestroyMixin implements OnInit {
 
   public matcher = new MyErrorStateMatcher();
 
-  constructor(private readonly router: Router
-    ,         private readonly youtubeService: YoutubeService
-    ,         private readonly vimeoService: VimeoService
-    ,         private readonly streamingPlatform: StreamingPlatformService
+  constructor(private readonly streamingPlatform: StreamingPlatformService
     ,         private readonly store: Store<VideoStateModel>) {
     super();
     this.videos$ = store.pipe(select('videos'));
@@ -75,25 +68,18 @@ export class AddComponent  extends OnDestroyMixin implements OnInit {
     const videoId = this.streamingPlatform.extractIdentifier(this.addVideoData.videoId);
 
     if (platform === PlatformEnum.youTube) {
-      this.store.dispatch(VideoActions.AddYouTubeVideo ({ videoId }));
+      this.store.dispatch(VideoActions.addYouTubeVideo ({ videoId }));
     }
 
     if (platform === PlatformEnum.vimeo) {
-        this.store.dispatch(VideoActions.AddVimeoVideo ({ videoId }));
+        this.store.dispatch(VideoActions.addVimeoVideo ({ videoId }));
     }
   }
 
   public onAddDefaultClick(): void {
+    const videosIds = ['3kptlAtiNV8', 'o0W_0MuvlwQ', 'BHnMItX2hEQ', '172825105' ];
 
-    this.youtubeService.getVideo('3kptlAtiNV8')
-      .pipe(
-        switchMap(() => this.youtubeService.getVideo('3kptlAtiNV8-T-s'))
-        , switchMap(() => this.youtubeService.getVideo('o0W_0MuvlwQ'))
-        , switchMap(() => this.youtubeService.getVideo('BHnMItX2hEQ'))
-        , switchMap(() => this.vimeoService.getVideo('172825105'))
-      )
-      .subscribe(() => {
-        this.router.navigate(['/home']);
-      });
+    videosIds.forEach(videoId => this.store.dispatch(VideoActions.addYouTubeVideo ({ videoId })));
+
   }
 }

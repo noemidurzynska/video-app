@@ -53,21 +53,24 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
       if (!this.allVideos) {
         return;
       }
-
-      if (this.sortValue === 'asc') {
-        this.allVideos = this.allVideos.slice().sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-      } else {
-        this.allVideos = this.allVideos.slice().sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
-      }
-
-      if (this.showFavValue) {
-        this.allVideos = this.allVideos.filter(videoElement => videoElement.fav);
-      }
-
-      this.length = this.allVideos.length;
-      this.sliceVideo();
+      this.loadVideos();
     }
       );
+  }
+
+  private loadVideos(): void {
+    if (this.sortValue === 'asc') {
+      this.videos = [...this.allVideos].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    } else {
+      this.videos = [...this.allVideos].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
+    }
+
+    if (this.showFavValue) {
+      this.videos = this.videos.filter(videoElement => videoElement.fav);
+    }
+
+    this.length = this.videos.length;
+    this.sliceVideo();
   }
 
   public onViewChange(viewMode: string): void {
@@ -81,14 +84,14 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   private sliceVideo(): void {
-    this.videos = this.allVideos.slice(this.pageIndex * this.pageSize, this.pageIndex * this.pageSize + this.pageSize);
+    this.videos = this.videos.slice(this.pageIndex * this.pageSize, this.pageIndex * this.pageSize + this.pageSize);
   }
 
-  public onChangeFavClick(video: Video, fav: boolean): void {
+  public onChangeFavClick(video: Video): void {
+    this.store.dispatch(VideoActions.toggleFavouriteVideo ({ videoId: video.id }) );
   }
 
   public onPlayClick(video: Video): void {
-
     if (this.canCloseWindow) {
         return;
     }
@@ -108,6 +111,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onDeleteClick(video: Video): void {
+    this.store.dispatch(VideoActions.deleteVideo ({ videoId: video.id }));
   }
 
   public onFavoriteShow(showFav: string): void {
@@ -116,6 +120,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     } else {
       this.showFavValue = true;
     }
+    this.loadVideos();
   }
 
   public onSortClick(sort: string): void {
@@ -124,8 +129,10 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     } else {
       this.sortValue = 'desc';
     }
+    this.loadVideos();
   }
 
   public onDeleteAllVideosClick(): void {
+    this.store.dispatch(VideoActions.clearVideos());
   }
 }

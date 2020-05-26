@@ -53,9 +53,9 @@
 
   <div class="item">
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite_border" *ngIf="!video.fav"
-      (click)="onChangeFavClick(video, true)">favorite_border</mat-icon>
+      (click)="onChangeFavClick(video)">favorite_border</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="Favorite" *ngIf="video.fav"
-      (click)="onChangeFavClick(video, false)">favorite</mat-icon>
+      (click)="onChangeFavClick(video)">favorite</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="play_circle_filled" (click)="onPlayClick(video)">
       play_circle_filled</mat-icon>
     <mat-icon class="cursor-pointer" aria-hidden="false" aria-label="delete_sweep" (click)="onDeleteClick(video)">

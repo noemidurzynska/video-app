@@ -8,34 +8,50 @@ export const initialState = initializeState();
 
 const reducer = createReducer(
   initialState,
-  on(VideoActions.AddYouTubeVideo, (state: VideoState, { videoId }) =>
+  on(VideoActions.addYouTubeVideo, (state, { videoId }) =>
     ({ ...state, showErrorMessage: true, videoId })
   ),
-  on(VideoActions.AddYouTubeVideoSuccess, (state: VideoState, videoResult: AddVideoResult ) => {
+  on(VideoActions.addYouTubeVideoSuccess, (state, videoResult: AddVideoResult ) => {
     const videos = state.videoList.slice();
-    const find = state.videoList.find(videoElement => videoElement.id === videoResult.video.id);
-    if (!find) {
+    const foundVideo = state.videoList.find(videoElement => videoElement.id === videoResult.video.id);
+
+    if (!foundVideo) {
+      videos.push(videoResult.video);
+    }
+
+    return { ...state, videoList: videos, showErrorMessage: false};
+  }),
+
+  on(VideoActions.addYouTubeVideoFail, (state, { fail }) =>
+    ({ ...state, showErrorMessage: fail })
+  ),
+  on(VideoActions.addVimeoVideo, (state, { videoId }) =>
+    ({ ...state, showErrorMessage: true, videoId })
+  ),
+  on(VideoActions.addVimeoVideoSuccess, (state, videoResult: AddVideoResult  ) => {
+    const videos = [...state.videoList];
+    const foundVideo = state.videoList.find(videoElement => videoElement.id === videoResult.video.id);
+    if (!foundVideo) {
       videos.push(videoResult.video);
     }
     return { ...state, videoList: videos, showErrorMessage: false};
   }),
-  on(VideoActions.AddYouTubeVideoFail, (state: VideoState, { fail }) =>
+  on(VideoActions.addVimeoVideoFail, (state, { fail }) =>
     ({ ...state, showErrorMessage: fail })
   ),
-  on(VideoActions.AddVimeoVideo, (state: VideoState, { videoId }) =>
-    ({ ...state, showErrorMessage: true, videoId })
+  on(VideoActions.deleteVideo, (state, { videoId } ) =>
+  ({ ...state, videoList: state.videoList.filter(videoElement => videoElement.id !== videoId ) })
   ),
-  on(VideoActions.AddVimeoVideoSuccess, (state: VideoState, videoResult: AddVideoResult  ) => {
-    const videos = state.videoList.slice();
-    const find = state.videoList.find(videoElement => videoElement.id === videoResult.video.id);
-    if (!find) {
-      videos.push(videoResult.video);
-    }
-    return { ...state, videoList: videos, showErrorMessage: false};
+  on(VideoActions.clearVideos, (state, { } ) =>
+  ({ ...state, videoList: [] })
+  ),
+  on(VideoActions.toggleFavouriteVideo, (state, { videoId } ) => {
+    const videos = [...state.videoList];
+    const videoIndex = videos.findIndex (videoElement => videoElement.id === videoId);
+
+    videos[videoIndex] = { ...videos[videoIndex], fav: !videos[videoIndex].fav };
+    return { ...state, videoList: videos };
   }),
-  on(VideoActions.AddVimeoVideoFail, (state: VideoState, { fail }) =>
-    ({ ...state, showErrorMessage: fail })
-  )
 );
 
 export function VideoReducer(state: VideoState | undefined, action: Action) {

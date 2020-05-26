@@ -15,7 +15,7 @@ export class YoutubeService {
   constructor(private readonly http: HttpClient
     ,         private readonly streamingPlatformService: StreamingPlatformService) { }
 
-  public getVideo(videoId: string): Observable<AddVideoResult> {
+  public addVideo(videoId: string): Observable<AddVideoResult> {
 
     return this.http.get('https://www.googleapis.com/youtube/v3/videos?id='
       + videoId +
@@ -45,6 +45,7 @@ export class YoutubeService {
         video.likesCount = item.statistics.likeCount;
         video.urlCode = videoId;
         video.creationDate = new Date();
+        video.fav = false;
 
         videoResult.showErrorMessage = false;
         videoResult.video = video;
