@@ -26,6 +26,7 @@
     "@ngrx/effects": "^9.1.2",
     "@ngrx/store": "^9.1.2",
     "@w11k/ngx-componentdestroyed": "^5.0.2",
+    "ngrx-store-localstorage": "^9.0.0",
     "ngx-webstorage-service": "^4.1.0",
     "redux-devtools-extension": "^2.13.8",
     "rxjs": "~6.5.5",

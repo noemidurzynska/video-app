@@ -32,8 +32,6 @@ export class VimeoService {
           video.urlCode = videoId;
           video.creationDate = new Date();
 
-          const isExsistingVideo = this.streamingPlatformService.saveVideo(video);
-          videoResult.isExistingVideo = isExsistingVideo;
           videoResult.video = video;
           videoResult.showErrorMessage = false;
           return of(videoResult);

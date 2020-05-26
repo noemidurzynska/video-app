@@ -1,6 +1,5 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { LOCAL_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Video } from '@core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
@@ -35,8 +34,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
 
 
 
-  constructor(@Inject(LOCAL_STORAGE) private storage: StorageService
-  ,           public dialog: MatDialog
+  constructor(public dialog: MatDialog
   ,           private readonly streamingPlatformService: StreamingPlatformService
   ,           private readonly store: Store<VideoStateModel>
   ) {
@@ -45,14 +43,12 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.store.dispatch(VideoActions.SetVideos({ videos: this.storage.get('video-list')}));
 
     this.videos$
     .pipe (
       untilComponentDestroyed(this)
     )
     .subscribe(store  => {
-      this.storage.set('video-list', store.videoList);
       this.allVideos = store.videoList;
       if (!this.allVideos) {
         return;
@@ -76,7 +72,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
 
   public onViewChange(viewMode: string): void {
     this.viewModeValue = viewMode;
-    this.store.dispatch(VideoActions.GetVideos());
   }
 
   public onPageChanged(event: PageEvent): void {
@@ -90,14 +85,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onChangeFavClick(video: Video, fav: boolean): void {
-    const allVideos = this.storage.get('video-list');
-    const findVideo = allVideos.find(videoElement => videoElement.id === video.id);
-    if (!findVideo) {
-      return;
-    }
-
-    findVideo.fav = fav;
-    this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 
   public onPlayClick(video: Video): void {
@@ -121,9 +108,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onDeleteClick(video: Video): void {
-    const allVideos = this.storage.get('video-list');
-    this.allVideos = allVideos.filter(videoElement => videoElement.id !== video.id);
-    this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 
   public onFavoriteShow(showFav: string): void {
@@ -132,7 +116,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     } else {
       this.showFavValue = true;
     }
-    this.store.dispatch(VideoActions.GetVideos());
   }
 
   public onSortClick(sort: string): void {
@@ -141,11 +124,8 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     } else {
       this.sortValue = 'desc';
     }
-    this.store.dispatch(VideoActions.GetVideos());
   }
 
   public onDeleteAllVideosClick(): void {
-    this.allVideos = [];
-    this.store.dispatch(VideoActions.SetVideos({ videos: this.allVideos }));
   }
 }

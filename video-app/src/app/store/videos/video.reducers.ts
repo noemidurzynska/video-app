@@ -13,7 +13,8 @@ const reducer = createReducer(
   ),
   on(VideoActions.AddYouTubeVideoSuccess, (state: VideoState, videoResult: AddVideoResult ) => {
     const videos = state.videoList.slice();
-    if (!videoResult.isExistingVideo) {
+    const find = state.videoList.find(videoElement => videoElement.id === videoResult.video.id);
+    if (!find) {
       videos.push(videoResult.video);
     }
     return { ...state, videoList: videos, showErrorMessage: false};
@@ -26,19 +27,14 @@ const reducer = createReducer(
   ),
   on(VideoActions.AddVimeoVideoSuccess, (state: VideoState, videoResult: AddVideoResult  ) => {
     const videos = state.videoList.slice();
-    if (!videoResult.isExistingVideo) {
+    const find = state.videoList.find(videoElement => videoElement.id === videoResult.video.id);
+    if (!find) {
       videos.push(videoResult.video);
     }
     return { ...state, videoList: videos, showErrorMessage: false};
   }),
   on(VideoActions.AddVimeoVideoFail, (state: VideoState, { fail }) =>
     ({ ...state, showErrorMessage: fail })
-  ),
-  on(VideoActions.SetVideos, (state: VideoState, { videos }) =>
-  ({ ...state, videoList: videos})
-  ),
-  on(VideoActions.GetVideos, (state: VideoState) =>
-    ({ ...state })
   )
 );
 

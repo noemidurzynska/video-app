@@ -1,29 +1,9 @@
 import { Injectable, Inject } from '@angular/core';
-import { Video } from '@core/models';
-import { StorageService, LOCAL_STORAGE } from 'ngx-webstorage-service';
 import { PlatformEnum } from '@core/enums/platform.enum';
 
 @Injectable()
 export class StreamingPlatformService {
-  constructor( @Inject (LOCAL_STORAGE) private storage: StorageService) {
-  }
-
-  public saveVideo(video: Video): boolean {
-
-    let videoList = this.storage.get('video-list');
-    if (videoList === undefined) {
-      videoList = new Array<Video>();
-    }
-
-    const existingVideo = videoList.find(videoElement => videoElement.id === video.id);
-    if (existingVideo) {
-      return existingVideo;
-    }
-
-    videoList.push(video);
-
-    this.storage.set('video-list', videoList);
-    return existingVideo;
+  constructor() {
   }
 
   public extractIdentifier(videoId: string): string {

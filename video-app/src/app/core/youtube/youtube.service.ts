@@ -46,10 +46,8 @@ export class YoutubeService {
         video.urlCode = videoId;
         video.creationDate = new Date();
 
-        const isExistingVideo = this.streamingPlatformService.saveVideo(video);
         videoResult.showErrorMessage = false;
         videoResult.video = video;
-        videoResult.isExistingVideo = isExistingVideo;
         return of(videoResult);
         })
       );

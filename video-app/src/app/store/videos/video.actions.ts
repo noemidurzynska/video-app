@@ -31,12 +31,3 @@ export const AddVimeoVideoFail = createAction(
   '[Video] - Add Vimeo Video Fail',
   props<{ fail: boolean }>()
 );
-
-export const SetVideos = createAction(
-  '[Video] - Set Videos',
-  props<{ videos: Video[] }>()
-);
-
-export const GetVideos = createAction(
-  '[Video] - Get Videos',
-);
