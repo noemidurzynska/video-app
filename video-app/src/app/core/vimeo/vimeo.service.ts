@@ -9,15 +9,21 @@ import { AddVideoResult } from '@core/models/addVideoResult';
 
 @Injectable()
 export class VimeoService {
-
   public passwords = new Passwords();
 
-  constructor(private readonly http: HttpClient
-    ,         private readonly streamingPlatformService: StreamingPlatformService) { }
+  constructor(
+    private readonly http: HttpClient,
+    private readonly streamingPlatformService: StreamingPlatformService
+  ) {}
 
   public addVideo(videoId: string): Observable<AddVideoResult> {
-
-    return this.http.get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
+    return this.http
+      .get(
+        'https://api.vimeo.com/videos/' +
+          videoId +
+          '?access_token=' +
+          this.passwords.Vimeo
+      )
       .pipe(
         switchMap((response: any) => {
           const videoResult = new AddVideoResult();
@@ -35,8 +41,8 @@ export class VimeoService {
           videoResult.video = video;
           videoResult.showErrorMessage = false;
           return of(videoResult);
-        })
-        , catchError(() => {
+        }),
+        catchError(() => {
           const videoResult = new AddVideoResult();
           videoResult.showErrorMessage = true;
           return of(videoResult);

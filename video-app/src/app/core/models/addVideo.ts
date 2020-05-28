@@ -1,3 +1,3 @@
-export class AddVideo{
+export class AddVideo {
   public videoId: string;
 }

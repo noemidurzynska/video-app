@@ -17,7 +17,7 @@
 </mat-button-toggle-group>
 
 <mat-button-toggle-group #showFav="matButtonToggleGroup" value="allVideos" class="margin-bottom margin-left"
-  (change)="onFavoriteShow(showFav.value)">
+  (change)="onFavoriteShow(showFav.value === 'allVideos')">
   <mat-button-toggle class="mat-raised-button" id="allVideos" name="allVideos" value="allVideos" aria-label="allVideos mode">
     All videos
   </mat-button-toggle>

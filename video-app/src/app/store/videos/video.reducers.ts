@@ -22,8 +22,8 @@ const reducer = createReducer(
     return { ...state, videoList: videos, showErrorMessage: false};
   }),
 
-  on(VideoActions.addYouTubeVideoFail, (state, { fail }) =>
-    ({ ...state, showErrorMessage: fail })
+  on(VideoActions.addYouTubeVideoFail, (state) =>
+    ({ ...state, showErrorMessage: true })
   ),
   on(VideoActions.addVimeoVideo, (state, { videoId }) =>
     ({ ...state, showErrorMessage: true, videoId })
@@ -36,8 +36,8 @@ const reducer = createReducer(
     }
     return { ...state, videoList: videos, showErrorMessage: false};
   }),
-  on(VideoActions.addVimeoVideoFail, (state, { fail }) =>
-    ({ ...state, showErrorMessage: fail })
+  on(VideoActions.addVimeoVideoFail, (state) =>
+    ({ ...state, showErrorMessage: true })
   ),
   on(VideoActions.deleteVideo, (state, { videoId } ) =>
   ({ ...state, videoList: state.videoList.filter(videoElement => videoElement.id !== videoId ) })

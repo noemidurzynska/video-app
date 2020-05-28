@@ -26,15 +26,16 @@ export class VideoEffects {
       mergeMap(action =>
         this.youTubeService.addVideo(action.videoId)
           .pipe(
-            map(videoResult => {
+            map(response => {
+              const videoResult = this.youTubeService.parseVideo(response, action.videoId);
               if (videoResult.showErrorMessage) {
-                return VideoActions.addYouTubeVideoFail({ fail: true });
+                return VideoActions.addYouTubeVideoFail();
               } else {
                 return VideoActions.addYouTubeVideoSuccess(videoResult);
               }
             }),
             catchError((error: Error) => {
-              return of(VideoActions.addYouTubeVideoFail({ fail: true }));
+              return of(VideoActions.addYouTubeVideoFail());
             })
           )
       )
@@ -49,14 +50,14 @@ export class VideoEffects {
           .pipe(
             map(videoResult => {
               if (videoResult.showErrorMessage) {
-                return VideoActions.addVimeoVideoFail({ fail: true });
+                return VideoActions.addVimeoVideoFail();
               } else {
                 return VideoActions.addVimeoVideoSuccess(videoResult);
               }
 
             }),
             catchError((error: Error) => {
-              return of(VideoActions.addVimeoVideoFail({ fail: true }));
+              return of(VideoActions.addVimeoVideoFail());
             })
           )
       )

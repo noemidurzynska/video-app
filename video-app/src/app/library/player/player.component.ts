@@ -5,11 +5,13 @@ import { PlayerVideoData } from '@core/models/playerVideoData';
 @Component({
   selector: 'app-player',
   templateUrl: './player.component.html',
-  styleUrls: ['./player.component.less']
+  styleUrls: ['./player.component.less'],
 })
 export class PlayerComponent {
-
-  constructor(@Inject(MAT_DIALOG_DATA) public data: PlayerVideoData, public dialogRef: MatDialogRef<PlayerComponent>) { }
+  constructor(
+    @Inject(MAT_DIALOG_DATA) public data: PlayerVideoData,
+    public dialogRef: MatDialogRef<PlayerComponent>
+  ) {}
 
   public onCloseClick(): void {
     this.dialogRef.close();

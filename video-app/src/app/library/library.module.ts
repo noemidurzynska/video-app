@@ -6,18 +6,9 @@ import { AddComponent } from './add/add.component';
 import { PlayerComponent } from './player/player.component';
 import { SharedModule } from '@shared/shared.module';
 
-
 @NgModule({
-  declarations: [
-    HomeComponent,
-    AddComponent,
-    PlayerComponent,
-  ],
-  imports: [
-    SharedModule
-  ],
-  entryComponents: [
-    PlayerComponent
-  ]
+  declarations: [HomeComponent, AddComponent, PlayerComponent],
+  imports: [SharedModule],
+  entryComponents: [PlayerComponent],
 })
-export class LibraryModule { }
+export class LibraryModule {}

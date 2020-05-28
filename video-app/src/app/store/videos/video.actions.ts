@@ -13,7 +13,6 @@ export const addYouTubeVideoSuccess = createAction(
 
 export const addYouTubeVideoFail = createAction(
   '[Video] - Add YouTube Video Fail',
-  props<{ fail: boolean }>()
 );
 
 export const addVimeoVideo = createAction(
@@ -28,7 +27,6 @@ export const addVimeoVideoSuccess = createAction(
 
 export const addVimeoVideoFail = createAction(
   '[Video] - Add Vimeo Video Fail',
-  props<{ fail: boolean }>()
 );
 
 export const deleteVideo = createAction(
