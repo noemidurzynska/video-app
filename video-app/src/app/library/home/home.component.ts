@@ -1,20 +1,16 @@
-import { Component, OnInit} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { Video } from '@core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { PlayerVideoData } from '@core/models/playerVideoData';
-import { VideoState } from '@store/videos/video.state';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import * as VideoActions from '@store/videos/video.actions';
 import { VideoStateModel } from '@core/models/videoState.model';
-import {
-  OnDestroyMixin,
-  untilComponentDestroyed,
-} from '@w11k/ngx-componentdestroyed';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { SortEnum } from '@core/enums/sort.enum';
+import { VideoFacade } from '@store/videos/video.facade';
 
 @Component({
   selector: 'app-home',
@@ -32,19 +28,19 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   public showFavValue = false;
   public sortValue = 'asc';
   public canCloseWindow = false;
-  public videos$: Observable<VideoState>;
 
   constructor(
     public dialog: MatDialog,
     private readonly streamingPlatformService: StreamingPlatformService,
-    private readonly store: Store<VideoStateModel>
+    private readonly store: Store<VideoStateModel>,
+    private readonly videoFacade: VideoFacade
   ) {
     super();
-    this.videos$ = store.select('videos');
+    this.videoFacade.videos$ = store.select('videos');
   }
 
   public ngOnInit(): void {
-    this.videos$.pipe(untilComponentDestroyed(this)).subscribe((store) => {
+    this.videoFacade.videos$.pipe(untilComponentDestroyed(this)).subscribe((store) => {
       this.allVideos = store.videoList;
       if (!this.allVideos) {
         return;
@@ -83,16 +79,14 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   private sliceVideo(): void {
-    this.videos = this.videos.slice(
+    this.videos = this.allVideos.slice(
       this.pageIndex * this.pageSize,
       this.pageIndex * this.pageSize + this.pageSize
     );
   }
 
   public onChangeFavClick(video: Video): void {
-    this.store.dispatch(
-      VideoActions.toggleFavouriteVideo({ videoId: video.id })
-    );
+    this.store.dispatch(VideoActions.toggleFavouriteVideo({ videoId: video.id }));
   }
 
   public onPlayClick(video: Video): void {
@@ -101,10 +95,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     }
     this.canCloseWindow = true;
 
-    const urlAdress = this.streamingPlatformService.getUrlAddress(
-      video.sourceType,
-      video.urlCode
-    );
+    const urlAdress = this.streamingPlatformService.getUrlAddress(video.sourceType, video.urlCode);
 
     const playerVideoData = new PlayerVideoData();
     playerVideoData.title = video.title;

@@ -11,34 +11,28 @@ import { StoreModule, ActionReducerMap, ActionReducer, MetaReducer } from '@ngrx
 import { EffectsModule } from '@ngrx/effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { VideoFacade } from '@store/videos/video.facade';
 
 const reducers: ActionReducerMap<any> = { videos: VideoReducer };
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
-    return localStorageSync ({ keys: ['videos'], rehydrate: true }) (reducer);
+  return localStorageSync({ keys: ['videos'], rehydrate: true })(reducer);
 }
 const metaReducers: Array<MetaReducer<any, any>> = [localStorageSyncReducer];
 
-
-
-
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     LibraryModule,
     CoreModule,
     SharedModule,
-    StoreModule.forRoot(
-      reducers,
-      { metaReducers }
-    ),
+    StoreModule.forRoot(reducers, { metaReducers }),
     EffectsModule.forRoot([VideoEffects]),
     StoreDevtoolsModule.instrument({
-      maxAge: 5
+      maxAge: 5,
     }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  providers: [VideoFacade],
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,11 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import {
-  FormControl,
-  FormGroupDirective,
-  NgForm,
-  Validators,
-} from '@angular/forms';
+import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
 import { Passwords } from '@core/models';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { ErrorStateMatcher } from '@angular/material/core';
@@ -13,24 +8,14 @@ import * as VideoActions from '@store/videos/video.actions';
 import { VideoState } from '@store/videos/video.state';
 import { Store, select } from '@ngrx/store';
 import { PlatformEnum } from '@core/enums/platform.enum';
-import {
-  OnDestroyMixin,
-  untilComponentDestroyed,
-} from '@w11k/ngx-componentdestroyed';
+import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { AddVideo } from '@core/models/addVideo';
 import { VideoStateModel } from '@core/models/videoState.model';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
-  isErrorState(
-    control: FormControl | null,
-    form: FormGroupDirective | NgForm | null
-  ): boolean {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
     const isSubmitted = form && form.submitted;
-    return !!(
-      control &&
-      control.invalid &&
-      (control.dirty || control.touched || isSubmitted)
-    );
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
   }
 }
 
@@ -46,10 +31,7 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
   public videos$: Observable<VideoState>;
   public showErrorMessage = false;
 
-  public identifierFormControl = new FormControl('', [
-    Validators.required,
-    Validators.email,
-  ]);
+  public identifierFormControl = new FormControl('', [Validators.required, Validators.email]);
 
   public matcher = new MyErrorStateMatcher();
 
@@ -74,9 +56,7 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
       return;
     }
 
-    const videoId = this.streamingPlatform.extractIdentifier(
-      this.addVideoData.videoId
-    );
+    const videoId = this.streamingPlatform.extractIdentifier(this.addVideoData.videoId);
 
     if (platform === PlatformEnum.youTube) {
       this.store.dispatch(VideoActions.addYouTubeVideo({ videoId }));
@@ -88,15 +68,16 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onAddDefaultClick(): void {
-    const videosIds = [
-      '3kptlAtiNV8',
-      'o0W_0MuvlwQ',
-      'BHnMItX2hEQ',
-      '172825105',
-    ];
+    const videosYouTubeIds = ['3kptlAtiNV8', 'o0W_0MuvlwQ', 'BHnMItX2hEQ'];
 
-    videosIds.forEach((videoId) =>
+    videosYouTubeIds.forEach((videoId) =>
       this.store.dispatch(VideoActions.addYouTubeVideo({ videoId }))
+    );
+
+    const videosVimeoIds = ['172825105'];
+
+    videosVimeoIds.forEach((videoId) =>
+      this.store.dispatch(VideoActions.addVimeoVideo({ videoId }))
     );
   }
 }
