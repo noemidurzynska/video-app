@@ -4,13 +4,11 @@ import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/fo
 import { Passwords } from '@core/models';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { ErrorStateMatcher } from '@angular/material/core';
-import * as VideoActions from '@store/videos/video.actions';
 import { VideoState } from '@store/videos/video.state';
-import { Store, select } from '@ngrx/store';
 import { PlatformEnum } from '@core/enums/platform.enum';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { AddVideo } from '@core/models/addVideo';
-import { VideoStateModel } from '@core/models/videoState.model';
+import { VideoFacade } from '@store/videos/video.facade';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -37,14 +35,13 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
 
   constructor(
     private readonly streamingPlatform: StreamingPlatformService,
-    private readonly store: Store<VideoStateModel>
+    private readonly videoFacade: VideoFacade
   ) {
     super();
-    this.videos$ = store.pipe(select('videos'));
   }
 
   public ngOnInit(): void {
-    this.videos$.pipe(untilComponentDestroyed(this)).subscribe((state) => {
+    this.videoFacade.videos$.pipe(untilComponentDestroyed(this)).subscribe((state) => {
       this.showErrorMessage = state.showErrorMessage;
     });
   }
@@ -59,25 +56,21 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
     const videoId = this.streamingPlatform.extractIdentifier(this.addVideoData.videoId);
 
     if (platform === PlatformEnum.youTube) {
-      this.store.dispatch(VideoActions.addYouTubeVideo({ videoId }));
+      this.videoFacade.addYouTubeVideo({ videoId });
     }
 
     if (platform === PlatformEnum.vimeo) {
-      this.store.dispatch(VideoActions.addVimeoVideo({ videoId }));
+      this.videoFacade.addVimeoVideo({ videoId });
     }
   }
 
   public onAddDefaultClick(): void {
     const videosYouTubeIds = ['3kptlAtiNV8', 'o0W_0MuvlwQ', 'BHnMItX2hEQ'];
 
-    videosYouTubeIds.forEach((videoId) =>
-      this.store.dispatch(VideoActions.addYouTubeVideo({ videoId }))
-    );
+    videosYouTubeIds.forEach((videoId) => this.videoFacade.addYouTubeVideo({ videoId }));
 
     const videosVimeoIds = ['172825105'];
 
-    videosVimeoIds.forEach((videoId) =>
-      this.store.dispatch(VideoActions.addVimeoVideo({ videoId }))
-    );
+    videosVimeoIds.forEach((videoId) => this.videoFacade.addVimeoVideo({ videoId }));
   }
 }

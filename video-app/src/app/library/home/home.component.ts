@@ -5,9 +5,6 @@ import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { PlayerVideoData } from '@core/models/playerVideoData';
-import { Store } from '@ngrx/store';
-import * as VideoActions from '@store/videos/video.actions';
-import { VideoStateModel } from '@core/models/videoState.model';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { SortEnum } from '@core/enums/sort.enum';
 import { VideoFacade } from '@store/videos/video.facade';
@@ -24,6 +21,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   public pageSizeOptions: number[] = [5, 10, 25, 100];
   public videos: Video[] = [];
   public allVideos: Video[] = [];
+  public filteredVideos: Video[] = [];
   public viewModeValue = 'metro';
   public showFavValue = false;
   public sortValue = 'asc';
@@ -32,11 +30,9 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   constructor(
     public dialog: MatDialog,
     private readonly streamingPlatformService: StreamingPlatformService,
-    private readonly store: Store<VideoStateModel>,
     private readonly videoFacade: VideoFacade
   ) {
     super();
-    this.videoFacade.videos$ = store.select('videos');
   }
 
   public ngOnInit(): void {
@@ -50,21 +46,22 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   private loadVideos(): void {
+    this.filteredVideos = [...this.allVideos];
     if (this.sortValue === 'asc') {
-      this.videos = [...this.allVideos].sort(
+      this.filteredVideos = this.filteredVideos.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
     } else {
-      this.videos = [...this.allVideos].sort(
+      this.filteredVideos = this.filteredVideos.sort(
         (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
       );
     }
 
     if (this.showFavValue) {
-      this.videos = this.videos.filter((videoElement) => videoElement.fav);
+      this.filteredVideos = this.filteredVideos.filter((videoElement) => videoElement.fav);
     }
 
-    this.length = this.videos.length;
+    this.length = this.filteredVideos.length;
     this.sliceVideo();
   }
 
@@ -79,14 +76,14 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   private sliceVideo(): void {
-    this.videos = this.allVideos.slice(
+    this.videos = this.filteredVideos.slice(
       this.pageIndex * this.pageSize,
       this.pageIndex * this.pageSize + this.pageSize
     );
   }
 
   public onChangeFavClick(video: Video): void {
-    this.store.dispatch(VideoActions.toggleFavouriteVideo({ videoId: video.id }));
+    this.videoFacade.toggleFavouriteVideo({ videoId: video.id });
   }
 
   public onPlayClick(video: Video): void {
@@ -111,14 +108,14 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onDeleteClick(video: Video): void {
-    this.store.dispatch(VideoActions.deleteVideo({ videoId: video.id }));
+    this.videoFacade.deleteVideo({ videoId: video.id });
   }
 
   public onFavoriteShow(showFav: boolean): void {
     if (showFav) {
-      this.showFavValue = false;
-    } else {
       this.showFavValue = true;
+    } else {
+      this.showFavValue = false;
     }
     this.loadVideos();
   }
@@ -133,6 +130,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onDeleteAllVideosClick(): void {
-    this.store.dispatch(VideoActions.clearVideos());
+    this.videoFacade.clearVideos();
   }
 }

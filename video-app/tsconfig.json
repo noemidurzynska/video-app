@@ -3,9 +3,10 @@
   "compilerOptions": {
     "baseUrl": "./",
     "paths": {
-    "@shared/*": ["src/app/shared/*"],
-    "@core/*": ["src/app/core/*"],
-    "@store/*": ["src/app/store/*"]
+      "@shared/*": ["src/app/shared/*"],
+      "@core/*": ["src/app/core/*"],
+      "@store/*": ["src/app/store/*"],
+      "@library/*": ["src/app/library/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
@@ -16,13 +17,8 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "typeRoots": [
-      "node_modules/@types"
-    ],
-    "lib": [
-      "es2018",
-      "dom"
-    ]
+    "typeRoots": ["node_modules/@types"],
+    "lib": ["es2018", "dom"]
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,
