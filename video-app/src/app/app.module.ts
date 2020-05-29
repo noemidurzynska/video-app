@@ -12,8 +12,9 @@ import { EffectsModule } from '@ngrx/effects';
 import { localStorageSync } from 'ngrx-store-localstorage';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { VideoFacade } from '@store/videos/video.facade';
+import { VideoReducerMap } from '@core/models/videoReducerMap';
 
-const reducers: ActionReducerMap<any> = { videos: VideoReducer };
+const reducers: ActionReducerMap<VideoReducerMap> = { videos: VideoReducer };
 export function localStorageSyncReducer(reducer: ActionReducer<any>): ActionReducer<any> {
   return localStorageSync({ keys: ['videos'], rehydrate: true })(reducer);
 }

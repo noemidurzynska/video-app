@@ -6,6 +6,7 @@ import { Video, Passwords } from '@core/models';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { PlatformEnum } from '@core/enums/platform.enum';
 import { AddVideoResult } from '@core/models/addVideoResult';
+import { VimeoResponse } from '@core/models/platforms/vimeo/vimeo.response';
 
 @Injectable()
 export class VimeoService {
@@ -18,14 +19,9 @@ export class VimeoService {
 
   public addVideo(videoId: string): Observable<AddVideoResult> {
     return this.http
-      .get(
-        'https://api.vimeo.com/videos/' +
-          videoId +
-          '?access_token=' +
-          this.passwords.Vimeo
-      )
+      .get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
       .pipe(
-        switchMap((response: any) => {
+        switchMap((response: VimeoResponse) => {
           const videoResult = new AddVideoResult();
           const video = new Video();
           video.sourceType = PlatformEnum.vimeo;

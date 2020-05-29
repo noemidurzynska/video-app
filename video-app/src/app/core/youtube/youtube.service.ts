@@ -4,6 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Video, Passwords } from '@core/models';
 import { PlatformEnum } from '@core/enums/platform.enum';
 import { AddVideoResult } from '@core/models/addVideoResult';
+import { YouTubeResponse } from '@core/models/platforms/youtube/youtube.response';
 
 @Injectable()
 export class YoutubeService {
@@ -11,8 +12,8 @@ export class YoutubeService {
 
   constructor(private readonly http: HttpClient) {}
 
-  public addVideo(videoId: string): Observable<any> {
-    return this.http.get(
+  public addVideo(videoId: string): Observable<YouTubeResponse> {
+    return this.http.get<YouTubeResponse>(
       'https://www.googleapis.com/youtube/v3/videos?id=' +
         videoId +
         '&key=' +
@@ -20,7 +21,7 @@ export class YoutubeService {
         '&part=snippet,contentDetails,statistics,status'
     );
   }
-  public parseVideo(response: any, videoId: string): AddVideoResult {
+  public parseVideo(response: YouTubeResponse, videoId: string): AddVideoResult {
     const videoResult = new AddVideoResult();
 
     if (response.items.length === 0) {
@@ -37,7 +38,7 @@ export class YoutubeService {
     video.date = item.snippet.publishedAt;
     video.image = item.snippet.thumbnails.default.url;
     video.playesCount = item.statistics.viewCount;
-    video.playsCountDescription = item.statistics.viewCount;
+    video.playsCountDescription = item.statistics.viewCount.toString();
     video.likesCount = item.statistics.likeCount;
     video.urlCode = videoId;
     video.creationDate = new Date();
