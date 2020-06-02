@@ -13,8 +13,8 @@ import {
   toggleFavouriteVideo,
 } from './video.actions';
 import { Store } from '@ngrx/store';
-import { AddVideoResult } from '@core/models/addVideoResult';
 import { VideoStateModel } from '@core/models/videoState.model';
+import { Video } from '@core/models';
 
 @Injectable()
 export class VideoFacade {
@@ -26,8 +26,8 @@ export class VideoFacade {
     this.store.dispatch(addYouTubeVideo(payload));
   }
 
-  addYouTubeVideoSuccess(addVideoResult: AddVideoResult) {
-    this.store.dispatch(addYouTubeVideoSuccess(addVideoResult));
+  addYouTubeVideoSuccess(video: Video) {
+    this.store.dispatch(addYouTubeVideoSuccess(video));
   }
 
   addYouTubeVideoFail() {
@@ -38,8 +38,8 @@ export class VideoFacade {
     this.store.dispatch(addVimeoVideo(payload));
   }
 
-  addVimeoVideoSuccess(addVideoResult: AddVideoResult) {
-    this.store.dispatch(addVimeoVideoSuccess(addVideoResult));
+  addVimeoVideoSuccess(video: Video) {
+    this.store.dispatch(addVimeoVideoSuccess(video));
   }
 
   addVimeoVideoFail() {

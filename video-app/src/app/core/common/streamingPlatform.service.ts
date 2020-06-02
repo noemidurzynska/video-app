@@ -3,11 +3,7 @@ import { PlatformEnum } from '@core/enums/platform.enum';
 
 @Injectable()
 export class StreamingPlatformService {
-  constructor() {
-  }
-
   public extractIdentifier(videoId: string): string {
-
     videoId = videoId
       .replace('https://www.', '')
       .replace('https://', '')
@@ -18,12 +14,10 @@ export class StreamingPlatformService {
   }
 
   public getUrlAddress(source: PlatformEnum, urlCode: string): string {
-    let urlAdress = '';
-    if (source === PlatformEnum.youTube) {
-      urlAdress = 'https://www.youtube.com/embed/' + urlCode;
-    } else {
-      urlAdress = 'https://player.vimeo.com/video/' + urlCode;
-    }
+    const urlAdress =
+      source === PlatformEnum.youTube
+        ? `https://www.youtube.com/embed/${urlCode}`
+        : `https://player.vimeo.com/video/${urlCode}`;
     return urlAdress;
   }
 }

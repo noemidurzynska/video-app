@@ -13,12 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SafePipe } from '@shared/pipes/safe.pipe';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
-
+import { JumbotronComponent } from './jumbotron/jumbotron.component';
+import { VideoDataComponent } from './video-data/video-data.component';
 
 @NgModule({
-  declarations: [
-    SafePipe
-  ],
+  declarations: [SafePipe, JumbotronComponent, VideoDataComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -32,7 +31,6 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
-
   ],
 
   exports: [
@@ -48,11 +46,14 @@ import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/materi
     MatIconModule,
     MatInputModule,
     MatPaginatorModule,
-    SafePipe
+    SafePipe,
+    JumbotronComponent,
+    VideoDataComponent,
   ],
-  providers: [{ provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
-  { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher }],
-  entryComponents: [
-  ]
+  providers: [
+    { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
+    { provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher },
+  ],
+  entryComponents: [],
 })
-export class SharedModule { }
+export class SharedModule {}

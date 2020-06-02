@@ -4,7 +4,7 @@ import { HttpClient } from '@angular/common/http';
 import { Video, Passwords } from '@core/models';
 import { PlatformEnum } from '@core/enums/platform.enum';
 import { AddVideoResult } from '@core/models/addVideoResult';
-import { YouTubeResponse } from '@core/models/platforms/youtube/youtube.response';
+import { YouTubeResponse } from '@core/models/youtube.response';
 
 @Injectable()
 export class YoutubeService {
@@ -14,19 +14,12 @@ export class YoutubeService {
 
   public addVideo(videoId: string): Observable<YouTubeResponse> {
     return this.http.get<YouTubeResponse>(
-      'https://www.googleapis.com/youtube/v3/videos?id=' +
-        videoId +
-        '&key=' +
-        this.passwords.YouTube +
-        '&part=snippet,contentDetails,statistics,status'
+      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${this.passwords.YouTube}&part=snippet,contentDetails,statistics,status`
     );
   }
-  public parseVideo(response: YouTubeResponse, videoId: string): AddVideoResult {
-    const videoResult = new AddVideoResult();
-
+  public parseVideo(response: YouTubeResponse, videoId: string): Video {
     if (response.items.length === 0) {
-      videoResult.showErrorMessage = true;
-      return videoResult;
+      return null;
     }
 
     const item = response.items[0];
@@ -43,9 +36,6 @@ export class YoutubeService {
     video.urlCode = videoId;
     video.creationDate = new Date();
     video.fav = false;
-
-    videoResult.showErrorMessage = false;
-    videoResult.video = video;
-    return videoResult;
+    return video;
   }
 }

@@ -1,0 +1,22 @@
+<div class="jumbotron jumbotron-fluid">
+  <div class="container">
+    <h1 class="display-4">{{ leadTitle }}</h1>
+    <p class="lead">
+      {{ leadText }}
+    </p>
+    <div *ngIf="expandedText">
+      <hr class="my-4" />
+      <p>
+        {{ expandedText }}
+      </p>
+      <button
+        class="mat-raised-button"
+        mat-stroked-button
+        color="warn"
+        (click)="onAddDefaultClick()"
+      >
+        Add defaults
+      </button>
+    </div>
+  </div>
+</div>

@@ -6,7 +6,8 @@
       "@shared/*": ["src/app/shared/*"],
       "@core/*": ["src/app/core/*"],
       "@store/*": ["src/app/store/*"],
-      "@library/*": ["src/app/library/*"]
+      "@library/*": ["src/app/library/*"],
+      "@config/*": ["src/app/config/*"]
     },
     "outDir": "./dist/out-tsc",
     "sourceMap": true,

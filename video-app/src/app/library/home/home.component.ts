@@ -112,20 +112,12 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onFavoriteShow(showFav: boolean): void {
-    if (showFav) {
-      this.showFavValue = true;
-    } else {
-      this.showFavValue = false;
-    }
+    this.showFavValue = showFav;
     this.loadVideos();
   }
 
   public onSortClick(sort: SortEnum): void {
-    if (sort === SortEnum.sortAsc) {
-      this.sortValue = 'asc';
-    } else {
-      this.sortValue = 'desc';
-    }
+    this.sortValue = sort === SortEnum.sortAsc ? 'asc' : 'desc';
     this.loadVideos();
   }
 

@@ -1,10 +1,22 @@
-<form class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform.value)">
+<app-jumbotron
+  [leadTitle]="'Add Video'"
+  [leadText]="'You can add your favourite videos here.'"
+  [expandedText]="'Enter video identifier and choose platform.'"
+  (addDefaultEvent)="onAddDefaultClick()"
+>
+</app-jumbotron>
 
+<form class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform.value)">
   <div>
     <mat-form-field>
       <mat-label>Video identifier</mat-label>
-      <input id="videoId" name="videoId" matInput [(ngModel)]="addVideoData.videoId"  [formControl]="identifierFormControl" [errorStateMatcher]="matcher"
-      placeholder="Enter url address or Id" />
+      <input
+        matInput
+        [(ngModel)]="addVideoData.videoId"
+        [formControl]="identifierFormControl"
+        [errorStateMatcher]="matcher"
+        placeholder="Enter url address or Id"
+      />
       <mat-error *ngIf="identifierFormControl.hasError('required')">
         Identifier is <strong>required</strong>
       </mat-error>
@@ -17,21 +29,25 @@
   </div>
   <div>
     <mat-button-toggle-group #platform="matButtonToggleGroup" value="youtube">
-      <mat-button-toggle id="youtube" name="youtube" value="youtube" aria-label="Text align center">
+      <mat-button-toggle value="youtube" aria-label="Text align center">
         YouTube
       </mat-button-toggle>
-      <mat-button-toggle id="vimeo" name="vimeo" value="vimeo" aria-label="Text align center">
+      <mat-button-toggle value="vimeo" aria-label="Text align center">
         Vimeo
       </mat-button-toggle>
     </mat-button-toggle-group>
   </div>
 
   <div class="margin-top">
-    <button class="mat-raised-button" mat-raised-button color="warn" (click)="onAddClick(form, platform.value)">Add</button>
+    <button
+      class="mat-raised-button"
+      mat-raised-button
+      color="warn"
+      (click)="onAddClick(form, platform.value)"
+    >
+      Add
+    </button>
   </div>
 </form>
- <div class="margin-top">
-    <button class="mat-raised-button" mat-stroked-button color="warn" (click)="onAddDefaultClick()">Add defaults</button>
-  </div>
 
- <span *ngIf="showErrorMessage">Something went wrong. Check link adress.</span>
+<span *ngIf="showErrorMessage">Something went wrong. Check link adress.</span>

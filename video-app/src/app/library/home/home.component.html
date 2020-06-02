@@ -1,11 +1,8 @@
-<div class="jumbotron jumbotron-fluid">
-  <div class="container">
-    <h1 class="display-4">Video App</h1>
-    <p class="lead">
-      You can watch your favourite videos from different platforms all in one place.
-    </p>
-  </div>
-</div>
+<app-jumbotron
+  [leadTitle]="'Video App'"
+  [leadText]="'You can watch your favourite videos from different platforms all in one place.'"
+>
+</app-jumbotron>
 
 <div class="navbar-container">
   <mat-button-toggle-group
@@ -14,22 +11,10 @@
     class="margin-bottom"
     (change)="onViewChange(viewMode.value)"
   >
-    <mat-button-toggle
-      class="mat-raised-button"
-      id="metro"
-      name="metro"
-      value="metro"
-      aria-label="Metro mode"
-    >
+    <mat-button-toggle class="mat-raised-button" value="metro" aria-label="Metro mode">
       Metro view
     </mat-button-toggle>
-    <mat-button-toggle
-      class="mat-raised-button"
-      id="list"
-      name="list"
-      value="list"
-      aria-label="List mode"
-    >
+    <mat-button-toggle class="mat-raised-button" value="list" aria-label="List mode">
       List view
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -40,22 +25,10 @@
     class="margin-bottom margin-left"
     (change)="onFavoriteShow(showFav.value !== 'allVideos')"
   >
-    <mat-button-toggle
-      class="mat-raised-button"
-      id="allVideos"
-      name="allVideos"
-      value="allVideos"
-      aria-label="allVideos mode"
-    >
+    <mat-button-toggle class="mat-raised-button" value="allVideos" aria-label="allVideos mode">
       All videos
     </mat-button-toggle>
-    <mat-button-toggle
-      class="mat-raised-button"
-      id="favorite"
-      name="favorite"
-      value="favorite"
-      aria-label="favorite mode"
-    >
+    <mat-button-toggle class="mat-raised-button" value="favorite" aria-label="favorite mode">
       Show favorite only
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -66,22 +39,10 @@
     class="margin-bottom margin-left"
     (change)="onSortClick(sort.value)"
   >
-    <mat-button-toggle
-      class="mat-raised-button"
-      id="asc"
-      name="asc"
-      value="asc"
-      aria-label="asc mode"
-    >
+    <mat-button-toggle class="mat-raised-button" value="asc" aria-label="asc mode">
       Sort by the newest
     </mat-button-toggle>
-    <mat-button-toggle
-      class="mat-raised-button"
-      id="desc"
-      name="desc"
-      value="desc"
-      aria-label="desc mode"
-    >
+    <mat-button-toggle class="mat-raised-button" value="desc" aria-label="desc mode">
       Sort by the oldest
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -93,20 +54,7 @@
     class="item box-corners box-border padding-around video-box-height margin-bottom"
     [ngClass]="{ item1: viewModeValue === 'metro', item2: viewModeValue === 'list' }"
   >
-    <img
-      class="cursor-pointer video-thumbnail"
-      src="{{ video.image }}"
-      (click)="onPlayClick(video)"
-    />
-    {{ video.title }}
-    <br />
-    {{ video.sourceType }}
-    <br />
-    {{ video.date | date: 'medium' }}
-    <br />
-    Liked {{ video.likesCount }}, Played {{ video.playsCountDescription }}
-    <br />
-    Added to your video {{ video.creationDate | date: 'medium' }}
+    <app-video-data [video]="video" (playEvent)="onPlayClick(video)"></app-video-data>
 
     <div class="item">
       <mat-icon

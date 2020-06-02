@@ -3,26 +3,20 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { Video, Passwords } from '@core/models';
-import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { PlatformEnum } from '@core/enums/platform.enum';
-import { AddVideoResult } from '@core/models/addVideoResult';
-import { VimeoResponse } from '@core/models/platforms/vimeo/vimeo.response';
+import { VimeoResponse } from '@core/models/vimeo.response';
 
 @Injectable()
 export class VimeoService {
   public passwords = new Passwords();
 
-  constructor(
-    private readonly http: HttpClient,
-    private readonly streamingPlatformService: StreamingPlatformService
-  ) {}
+  constructor(private readonly http: HttpClient) {}
 
-  public addVideo(videoId: string): Observable<AddVideoResult> {
+  public addVideo(videoId: string): Observable<Video> {
     return this.http
-      .get('https://api.vimeo.com/videos/' + videoId + '?access_token=' + this.passwords.Vimeo)
+      .get(`https://api.vimeo.com/videos/${videoId}?access_token=${this.passwords.Vimeo}`)
       .pipe(
         switchMap((response: VimeoResponse) => {
-          const videoResult = new AddVideoResult();
           const video = new Video();
           video.sourceType = PlatformEnum.vimeo;
           video.id = response.resource_key;
@@ -33,15 +27,10 @@ export class VimeoService {
           video.playsCountDescription = 'unknown';
           video.urlCode = videoId;
           video.creationDate = new Date();
-
-          videoResult.video = video;
-          videoResult.showErrorMessage = false;
-          return of(videoResult);
+          return of(video);
         }),
         catchError(() => {
-          const videoResult = new AddVideoResult();
-          videoResult.showErrorMessage = true;
-          return of(videoResult);
+          return of(null);
         })
       );
   }

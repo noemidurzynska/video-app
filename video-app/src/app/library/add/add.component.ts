@@ -9,6 +9,7 @@ import { PlatformEnum } from '@core/enums/platform.enum';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { AddVideo } from '@core/models/addVideo';
 import { VideoFacade } from '@store/videos/video.facade';
+import { videoConfig } from '@config/app.config';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -25,12 +26,9 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 export class AddComponent extends OnDestroyMixin implements OnInit {
   public addVideoData: AddVideo = new AddVideo();
   public passwords = new Passwords();
-
   public videos$: Observable<VideoState>;
   public showErrorMessage = false;
-
   public identifierFormControl = new FormControl('', [Validators.required, Validators.email]);
-
   public matcher = new MyErrorStateMatcher();
 
   constructor(
@@ -65,11 +63,11 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onAddDefaultClick(): void {
-    const videosYouTubeIds = ['3kptlAtiNV8', 'o0W_0MuvlwQ', 'BHnMItX2hEQ'];
+    const videosYouTubeIds = videoConfig.youTubeVideoIds;
 
     videosYouTubeIds.forEach((videoId) => this.videoFacade.addYouTubeVideo({ videoId }));
 
-    const videosVimeoIds = ['172825105'];
+    const videosVimeoIds = videoConfig.vimeoVideoIds;
 
     videosVimeoIds.forEach((videoId) => this.videoFacade.addVimeoVideo({ videoId }));
   }

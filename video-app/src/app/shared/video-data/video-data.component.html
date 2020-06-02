@@ -1,0 +1,10 @@
+<img class="cursor-pointer video-thumbnail" src="{{ video.image }}" (click)="onPlayClick(video)" />
+{{ video.title }}
+<br />
+{{ video.sourceType }}
+<br />
+{{ video.date | date: 'medium' }}
+<br />
+Liked {{ video.likesCount }}, Played {{ video.playsCountDescription }}
+<br />
+Added to your video {{ video.creationDate | date: 'medium' }}
