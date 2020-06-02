@@ -24,7 +24,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
   styleUrls: ['./add.component.less'],
 })
 export class AddComponent extends OnDestroyMixin implements OnInit {
-  public addVideoData: AddVideo = new AddVideo();
+  addVideoData: AddVideo = { videoId: '' };
   public passwords = new Passwords();
   public videos$: Observable<VideoState>;
   public showErrorMessage = false;

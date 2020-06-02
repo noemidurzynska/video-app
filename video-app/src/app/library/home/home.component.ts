@@ -94,9 +94,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
 
     const urlAdress = this.streamingPlatformService.getUrlAddress(video.sourceType, video.urlCode);
 
-    const playerVideoData = new PlayerVideoData();
-    playerVideoData.title = video.title;
-    playerVideoData.urlPlayer = urlAdress;
+    const playerVideoData: PlayerVideoData = { title: video.title, urlPlayer: urlAdress };
     this.dialog
       .open(PlayerComponent, {
         data: playerVideoData,

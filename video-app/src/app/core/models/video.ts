@@ -1,15 +1,15 @@
 import { PlatformEnum } from '@core/enums/platform.enum';
 
-export class Video {
-  public id: string;
-  public playesCount: number;
-  public playsCountDescription: string;
-  public likesCount: number;
-  public title: string;
-  public image: string;
-  public date: Date;
-  public sourceType: PlatformEnum;
-  public urlCode: string;
-  public fav: boolean;
-  public creationDate: Date;
+export interface Video {
+  id: string;
+  playesCount: number;
+  playsCountDescription: string;
+  likesCount: number;
+  title: string;
+  image: string;
+  date: Date;
+  sourceType: PlatformEnum;
+  urlCode: string;
+  fav: boolean;
+  creationDate: Date;
 }

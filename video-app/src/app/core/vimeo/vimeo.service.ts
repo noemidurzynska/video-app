@@ -17,16 +17,19 @@ export class VimeoService {
       .get(`https://api.vimeo.com/videos/${videoId}?access_token=${this.passwords.Vimeo}`)
       .pipe(
         switchMap((response: VimeoResponse) => {
-          const video = new Video();
-          video.sourceType = PlatformEnum.vimeo;
-          video.id = response.resource_key;
-          video.title = response.name;
-          video.date = response.created_time;
-          video.image = response.pictures.sizes[0].link;
-          video.likesCount = response.metadata.connections.likes.total;
-          video.playsCountDescription = 'unknown';
-          video.urlCode = videoId;
-          video.creationDate = new Date();
+          const video: Video = {
+            sourceType: PlatformEnum.vimeo,
+            id: response.resource_key,
+            title: response.name,
+            date: response.created_time,
+            image: response.pictures.sizes[0].link,
+            likesCount: response.metadata.connections.likes.total,
+            playsCountDescription: 'unknown',
+            urlCode: videoId,
+            creationDate: new Date(),
+            playesCount: null,
+            fav: false,
+          };
           return of(video);
         }),
         catchError(() => {
