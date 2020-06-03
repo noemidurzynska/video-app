@@ -4,53 +4,13 @@
 >
 </app-header>
 
-<app-control-panel [(sort)]="sortValue" (loadVideoEvent)="loadVideos()"></app-control-panel>
+<app-control-panel
+  [(sort)]="sortValue"
+  (loadVideoEvent)="loadVideos()"
+  [(fav)]="showFavValue"
+></app-control-panel>
 
-<!-- (changeFavShowEvent)="onFavoriteShow(showFav.value !== 'allVideos')"
-(changeViewEvent)="onViewChange(viewMode.value)" -->
-<!-- <div class="navbar-container">
-  <mat-button-toggle-group
-    #viewMode="matButtonToggleGroup"
-    value="metro"
-    class="margin-bottom"
-    (change)="onViewChange(viewMode.value)"
-  >
-    <mat-button-toggle class="mat-raised-button" value="metro" aria-label="Metro mode">
-      Metro view
-    </mat-button-toggle>
-    <mat-button-toggle class="mat-raised-button" value="list" aria-label="List mode">
-      List view
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <mat-button-toggle-group
-    #showFav="matButtonToggleGroup"
-    value="allVideos"
-    class="margin-bottom margin-left"
-    (change)="onFavoriteShow(showFav.value !== 'allVideos')"
-  >
-    <mat-button-toggle class="mat-raised-button" value="allVideos" aria-label="allVideos mode">
-      All videos
-    </mat-button-toggle>
-    <mat-button-toggle class="mat-raised-button" value="favorite" aria-label="favorite mode">
-      Show favorite only
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-
-  <mat-button-toggle-group
-    #sort="matButtonToggleGroup"
-    value="asc"
-    class="margin-bottom margin-left"
-    (change)="onSortClick(sort.value)"
-  >
-    <mat-button-toggle class="mat-raised-button" value="asc" aria-label="asc mode">
-      Sort by the newest
-    </mat-button-toggle>
-    <mat-button-toggle class="mat-raised-button" value="desc" aria-label="desc mode">
-      Sort by the oldest
-    </mat-button-toggle>
-  </mat-button-toggle-group>
-</div> -->
+<!--(changeViewEvent)="onViewChange(viewMode.value)" -->
 
 <div class="video-container">
   <div

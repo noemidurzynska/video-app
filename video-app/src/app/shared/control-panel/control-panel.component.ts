@@ -8,10 +8,11 @@ import { SortEnum } from '@core/enums/sort.enum';
 })
 export class ControlPanelComponent {
   @Input() public sort: SortEnum;
-  @Output() public sortChange = new EventEmitter();
+  @Input() public fav: boolean;
 
+  @Output() public sortChange = new EventEmitter();
+  @Output() public favChange = new EventEmitter();
   @Output() public changeViewEvent = new EventEmitter<string>();
-  @Output() public changeFavShowEvent = new EventEmitter<boolean>();
   @Output() public loadVideoEvent = new EventEmitter();
 
   public onViewChange(viewMode: string): void {
@@ -19,7 +20,8 @@ export class ControlPanelComponent {
   }
 
   public onFavoriteShow(showFav: boolean): void {
-    this.changeFavShowEvent.emit(showFav);
+    this.favChange.emit(showFav);
+    this.loadVideoEvent.emit();
   }
 
   public onSortClick(sort: SortEnum): void {

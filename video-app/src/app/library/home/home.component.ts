@@ -109,11 +109,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     this.videoFacade.deleteVideo({ videoId: video.id });
   }
 
-  public onFavoriteShow(showFav: boolean): void {
-    this.showFavValue = showFav;
-    this.loadVideos();
-  }
-
   public onDeleteAllVideosClick(): void {
     this.videoFacade.clearVideos();
   }
