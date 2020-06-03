@@ -24,7 +24,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   public filteredVideos: Video[] = [];
   public viewModeValue = 'metro';
   public showFavValue = false;
-  public sortValue = 'asc';
+  public sortValue = SortEnum.sortAsc;
   public canCloseWindow = false;
 
   constructor(
@@ -47,7 +47,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
 
   private loadVideos(): void {
     this.filteredVideos = [...this.allVideos];
-    if (this.sortValue === 'asc') {
+    if (this.sortValue === SortEnum.sortAsc) {
       this.filteredVideos = this.filteredVideos.sort(
         (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
       );
@@ -115,7 +115,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public onSortClick(sort: SortEnum): void {
-    this.sortValue = sort === SortEnum.sortAsc ? 'asc' : 'desc';
+    this.sortValue = sort;
     this.loadVideos();
   }
 
