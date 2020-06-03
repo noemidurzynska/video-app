@@ -1,11 +1,11 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-  selector: 'app-jumbotron',
-  templateUrl: './jumbotron.component.html',
-  styleUrls: ['./jumbotron.component.less'],
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.less'],
 })
-export class JumbotronComponent {
+export class HeaderComponent {
   @Input() public leadText: string;
   @Input() public leadTitle: string;
   @Input() public expandedText: string;

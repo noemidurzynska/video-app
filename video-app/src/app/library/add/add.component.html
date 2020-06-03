@@ -1,10 +1,10 @@
-<app-jumbotron
+<app-header
   [leadTitle]="'Add Video'"
   [leadText]="'You can add your favourite videos here.'"
   [expandedText]="'Enter video identifier and choose platform.'"
   (addDefaultEvent)="onAddDefaultClick()"
 >
-</app-jumbotron>
+</app-header>
 
 <form class="add-form" #form="ngForm" (keyup.enter)="onAddClick(form, platform.value)">
   <div>

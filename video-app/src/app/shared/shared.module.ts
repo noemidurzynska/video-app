@@ -13,11 +13,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { SafePipe } from '@shared/pipes/safe.pipe';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
-import { JumbotronComponent } from './jumbotron/jumbotron.component';
+import { HeaderComponent } from './header/header.component';
 import { VideoDataComponent } from './video-data/video-data.component';
 
 @NgModule({
-  declarations: [SafePipe, JumbotronComponent, VideoDataComponent],
+  declarations: [SafePipe, VideoDataComponent, HeaderComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -47,7 +47,7 @@ import { VideoDataComponent } from './video-data/video-data.component';
     MatInputModule,
     MatPaginatorModule,
     SafePipe,
-    JumbotronComponent,
+    HeaderComponent,
     VideoDataComponent,
   ],
   providers: [

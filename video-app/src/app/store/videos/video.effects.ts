@@ -25,9 +25,8 @@ export class VideoEffects {
             const video = this.youTubeService.parseVideo(response, action.videoId);
             if (video === null) {
               return VideoActions.addYouTubeVideoFail();
-            } else {
-              return VideoActions.addYouTubeVideoSuccess(video);
             }
+            return VideoActions.addYouTubeVideoSuccess(video);
           }),
           catchError((error: Error) => {
             return of(VideoActions.addYouTubeVideoFail());

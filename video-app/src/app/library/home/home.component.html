@@ -1,8 +1,8 @@
-<app-jumbotron
+<app-header
   [leadTitle]="'Video App'"
   [leadText]="'You can watch your favourite videos from different platforms all in one place.'"
 >
-</app-jumbotron>
+</app-header>
 
 <div class="navbar-container">
   <mat-button-toggle-group
@@ -54,42 +54,12 @@
     class="item box-corners box-border padding-around video-box-height margin-bottom"
     [ngClass]="{ item1: viewModeValue === 'metro', item2: viewModeValue === 'list' }"
   >
-    <app-video-data [video]="video" (playEvent)="onPlayClick(video)"></app-video-data>
-
-    <div class="item">
-      <mat-icon
-        class="cursor-pointer"
-        aria-hidden="false"
-        aria-label="Favorite_border"
-        *ngIf="!video.fav"
-        (click)="onChangeFavClick(video)"
-        >favorite_border</mat-icon
-      >
-      <mat-icon
-        class="cursor-pointer"
-        aria-hidden="false"
-        aria-label="Favorite"
-        *ngIf="video.fav"
-        (click)="onChangeFavClick(video)"
-        >favorite</mat-icon
-      >
-      <mat-icon
-        class="cursor-pointer"
-        aria-hidden="false"
-        aria-label="play_circle_filled"
-        (click)="onPlayClick(video)"
-      >
-        play_circle_filled</mat-icon
-      >
-      <mat-icon
-        class="cursor-pointer"
-        aria-hidden="false"
-        aria-label="delete_sweep"
-        (click)="onDeleteClick(video)"
-      >
-        delete_sweep</mat-icon
-      >
-    </div>
+    <app-video-data
+      [video]="video"
+      (playEvent)="onPlayClick(video)"
+      (changeFavEvent)="onChangeFavClick(video)"
+      (deleteEvent)="onDeleteClick(video)"
+    ></app-video-data>
   </div>
 </div>
 
