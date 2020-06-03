@@ -14,10 +14,11 @@ import { MatInputModule } from '@angular/material/input';
 import { SafePipe } from '@shared/pipes/safe.pipe';
 import { ErrorStateMatcher, ShowOnDirtyErrorStateMatcher } from '@angular/material/core';
 import { HeaderComponent } from './header/header.component';
-import { VideoDataComponent } from './video-data/video-data.component';
+import { VideoComponent } from './video/video.component';
+import { ControlPanelComponent } from './control-panel/control-panel.component';
 
 @NgModule({
-  declarations: [SafePipe, VideoDataComponent, HeaderComponent],
+  declarations: [SafePipe, HeaderComponent, VideoComponent, ControlPanelComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -48,7 +49,8 @@ import { VideoDataComponent } from './video-data/video-data.component';
     MatPaginatorModule,
     SafePipe,
     HeaderComponent,
-    VideoDataComponent,
+    VideoComponent,
+    ControlPanelComponent,
   ],
   providers: [
     { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },

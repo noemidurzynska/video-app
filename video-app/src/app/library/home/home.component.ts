@@ -45,7 +45,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     });
   }
 
-  private loadVideos(): void {
+  public loadVideos(): void {
     this.filteredVideos = [...this.allVideos];
     if (this.sortValue === SortEnum.sortAsc) {
       this.filteredVideos = this.filteredVideos.sort(
@@ -111,11 +111,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
 
   public onFavoriteShow(showFav: boolean): void {
     this.showFavValue = showFav;
-    this.loadVideos();
-  }
-
-  public onSortClick(sort: SortEnum): void {
-    this.sortValue = sort;
     this.loadVideos();
   }
 

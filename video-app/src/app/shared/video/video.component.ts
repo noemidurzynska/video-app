@@ -1,12 +1,13 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
 import { Video } from '@core/models';
+import { SortEnum } from '@core/enums/sort.enum';
 
 @Component({
-  selector: 'app-video-data',
-  templateUrl: './video-data.component.html',
-  styleUrls: ['./video-data.component.less'],
+  selector: 'app-video',
+  templateUrl: './video.component.html',
+  styleUrls: ['./video.component.less'],
 })
-export class VideoDataComponent {
+export class VideoComponent {
   @Input() public video: Video;
 
   @Output() public playEvent = new EventEmitter<Video>();
@@ -16,9 +17,11 @@ export class VideoDataComponent {
   public onPlayClick(video: Video): void {
     this.playEvent.emit(video);
   }
+
   public onChangeFavClick(video: Video): void {
     this.changeFavEvent.emit(video);
   }
+
   public onDeleteClick(video: Video): void {
     this.deleteEvent.emit(video);
   }

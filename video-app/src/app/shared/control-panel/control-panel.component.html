@@ -1,14 +1,4 @@
-<app-header
-  [leadTitle]="'Video App'"
-  [leadText]="'You can watch your favourite videos from different platforms all in one place.'"
->
-</app-header>
-
-<app-control-panel [(sort)]="sortValue" (loadVideoEvent)="loadVideos()"></app-control-panel>
-
-<!-- (changeFavShowEvent)="onFavoriteShow(showFav.value !== 'allVideos')"
-(changeViewEvent)="onViewChange(viewMode.value)" -->
-<!-- <div class="navbar-container">
+<div class="navbar-container">
   <mat-button-toggle-group
     #viewMode="matButtonToggleGroup"
     value="metro"
@@ -50,41 +40,4 @@
       Sort by the oldest
     </mat-button-toggle>
   </mat-button-toggle-group>
-</div> -->
-
-<div class="video-container">
-  <div
-    *ngFor="let video of videos"
-    class="item box-corners box-border padding-around video-box-height margin-bottom"
-    [ngClass]="{ item1: viewModeValue === 'metro', item2: viewModeValue === 'list' }"
-  >
-    <app-video
-      [video]="video"
-      (playEvent)="onPlayClick(video)"
-      (changeFavEvent)="onChangeFavClick(video)"
-      (deleteEvent)="onDeleteClick(video)"
-    ></app-video>
-  </div>
 </div>
-
-<div class="nav justify-content-end">
-  <button mat-raised-button color="warn" (click)="onDeleteAllVideosClick()">
-    Delete all videos
-  </button>
-</div>
-
-<div
-  class="box-corners box-border width100 margin-top margin-bottom padding-around"
-  *ngIf="length === 0"
->
-  No films in library
-</div>
-
-<mat-paginator
-  [length]="length"
-  [pageSize]="pageSize"
-  [pageIndex]="pageIndex"
-  [pageSizeOptions]="pageSizeOptions"
-  (page)="onPageChanged($event)"
->
-</mat-paginator>
