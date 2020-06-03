@@ -65,10 +65,6 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     this.sliceVideo();
   }
 
-  public onViewChange(viewMode: string): void {
-    this.viewModeValue = viewMode;
-  }
-
   public onPageChanged(event: PageEvent): void {
     this.pageIndex = event.pageIndex;
     this.pageSize = event.pageSize;
