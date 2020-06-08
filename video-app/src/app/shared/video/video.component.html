@@ -13,7 +13,6 @@ Added to your video {{ video.creationDate | date: 'medium' }}
   <mat-icon
     class="cursor-pointer"
     aria-hidden="false"
-    aria-label="Favorite_border"
     *ngIf="!video.fav"
     (click)="onChangeFavClick(video)"
     >favorite_border</mat-icon
@@ -21,25 +20,14 @@ Added to your video {{ video.creationDate | date: 'medium' }}
   <mat-icon
     class="cursor-pointer"
     aria-hidden="false"
-    aria-label="Favorite"
     *ngIf="video.fav"
     (click)="onChangeFavClick(video)"
     >favorite</mat-icon
   >
-  <mat-icon
-    class="cursor-pointer"
-    aria-hidden="false"
-    aria-label="play_circle_filled"
-    (click)="onPlayClick(video)"
-  >
+  <mat-icon class="cursor-pointer" aria-hidden="false" (click)="onPlayClick(video)">
     play_circle_filled</mat-icon
   >
-  <mat-icon
-    class="cursor-pointer"
-    aria-hidden="false"
-    aria-label="delete_sweep"
-    (click)="onDeleteClick(video)"
-  >
+  <mat-icon class="cursor-pointer" aria-hidden="false" (click)="onDeleteClick(video)">
     delete_sweep</mat-icon
   >
 </div>

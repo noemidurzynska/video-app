@@ -1,10 +1,9 @@
 import { createAction, props } from '@ngrx/store';
-import { AddVideoResult } from '@core/models/addVideoResult';
-import { Video } from '@core/models';
+import { Video } from '@core/models/video';
 
 export const addYouTubeVideo = createAction(
   '[Video] - Add YouTube Video',
-  props<{ videoId: string }>()
+  props<{ videoId: Video['id'] }>()
 );
 
 export const addYouTubeVideoSuccess = createAction(
@@ -16,7 +15,7 @@ export const addYouTubeVideoFail = createAction('[Video] - Add YouTube Video Fai
 
 export const addVimeoVideo = createAction(
   '[Video] -  Add Vimeo Video',
-  props<{ videoId: string }>()
+  props<{ videoId: Video['id'] }>()
 );
 
 export const addVimeoVideoSuccess = createAction(
@@ -26,11 +25,14 @@ export const addVimeoVideoSuccess = createAction(
 
 export const addVimeoVideoFail = createAction('[Video] - Add Vimeo Video Fail');
 
-export const deleteVideo = createAction('[Video] - Delete Video', props<{ videoId: string }>());
+export const deleteVideo = createAction(
+  '[Video] - Delete Video',
+  props<{ videoId: Video['id'] }>()
+);
 
 export const clearVideos = createAction('[Video] - Clear Video');
 
 export const toggleFavouriteVideo = createAction(
   '[Video] - Toggle Favourite Video',
-  props<{ videoId: string }>()
+  props<{ videoId: Video['id'] }>()
 );

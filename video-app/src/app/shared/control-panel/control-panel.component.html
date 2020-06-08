@@ -5,10 +5,10 @@
     class="margin-bottom"
     (change)="onViewChange(viewMode.value)"
   >
-    <mat-button-toggle class="mat-raised-button" value="metro" aria-label="Metro mode">
+    <mat-button-toggle class="mat-raised-button" value="metro">
       Metro view
     </mat-button-toggle>
-    <mat-button-toggle class="mat-raised-button" value="list" aria-label="List mode">
+    <mat-button-toggle class="mat-raised-button" value="list">
       List view
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -19,10 +19,10 @@
     class="margin-bottom margin-left"
     (change)="onFavoriteShow(showFav.value !== 'allVideos')"
   >
-    <mat-button-toggle class="mat-raised-button" value="allVideos" aria-label="allVideos mode">
+    <mat-button-toggle class="mat-raised-button" value="allVideos">
       All videos
     </mat-button-toggle>
-    <mat-button-toggle class="mat-raised-button" value="favorite" aria-label="favorite mode">
+    <mat-button-toggle class="mat-raised-button" value="favorite">
       Show favorite only
     </mat-button-toggle>
   </mat-button-toggle-group>
@@ -33,10 +33,10 @@
     class="margin-bottom margin-left"
     (change)="onSortClick(sort.value)"
   >
-    <mat-button-toggle class="mat-raised-button" value="asc" aria-label="asc mode">
+    <mat-button-toggle class="mat-raised-button" value="asc">
       Sort by the newest
     </mat-button-toggle>
-    <mat-button-toggle class="mat-raised-button" value="desc" aria-label="desc mode">
+    <mat-button-toggle class="mat-raised-button" value="desc">
       Sort by the oldest
     </mat-button-toggle>
   </mat-button-toggle-group>

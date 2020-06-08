@@ -2,17 +2,19 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import { Video, Passwords } from '@core/models';
 import { PlatformEnum } from '@core/enums/platform.enum';
 import { VimeoResponse } from '@core/models/vimeo.response';
+import { Video } from '@core/models/video';
+import { Passwords } from '@core/models/passwords';
+import { VideoStrategy } from '@core/strategy/videoStrategy';
 
 @Injectable()
-export class VimeoService {
+export class VimeoService implements VideoStrategy {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient) {}
 
-  public addVideo(videoId: string): Observable<Video> {
+  public addVideo(videoId: Video['id']): Observable<Video> {
     return this.http
       .get(`https://api.vimeo.com/videos/${videoId}?access_token=${this.passwords.Vimeo}`)
       .pipe(
@@ -26,7 +28,7 @@ export class VimeoService {
       );
   }
 
-  private parseVideo(response: VimeoResponse, videoId: string): Video {
+  private parseVideo(response: VimeoResponse, videoId: Video['id']): Video {
     const video: Video = {
       sourceType: PlatformEnum.vimeo,
       id: response.resource_key,

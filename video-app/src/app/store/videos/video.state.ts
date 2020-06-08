@@ -1,4 +1,4 @@
-import { Video } from '@core/models';
+import { Video } from '@core/models/video';
 
 export interface VideoState {
   videoId: string;
@@ -6,4 +6,8 @@ export interface VideoState {
   videoList: Video[];
 }
 
-export const initializeState = (): VideoState => ({ videoId: '', videoList: [] , showErrorMessage: false });
+export const initializeState = (): VideoState => ({
+  videoId: '',
+  videoList: [],
+  showErrorMessage: false,
+});

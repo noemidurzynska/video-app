@@ -1,22 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { Video, Passwords } from '@core/models';
 import { PlatformEnum } from '@core/enums/platform.enum';
 import { YouTubeResponse } from '@core/models/youtube.response';
+import { Video } from '@core/models/video';
+import { Passwords } from '@core/models/passwords';
+import { VideoStrategy } from '@core/strategy/videoStrategy';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Injectable()
-export class YoutubeService {
+export class YoutubeService implements VideoStrategy {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient) {}
 
-  public addVideo(videoId: string): Observable<YouTubeResponse> {
-    return this.http.get<YouTubeResponse>(
-      `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${this.passwords.YouTube}&part=snippet,contentDetails,statistics,status`
-    );
+  public addVideo(videoId: Video['id']): Observable<Video> {
+    return this.http
+      .get<YouTubeResponse>(
+        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}
+        &key=${this.passwords.YouTube}&part=snippet,contentDetails,statistics,status`
+      )
+      .pipe(
+        switchMap((response: YouTubeResponse) => {
+          const video = this.parseVideo(response, videoId);
+          return of(video);
+        }),
+        catchError(() => {
+          return of(null);
+        })
+      );
   }
-  public parseVideo(response: YouTubeResponse, videoId: string): Video {
+  private parseVideo(response: YouTubeResponse, videoId: Video['id']): Video {
     if (response.items.length === 0) {
       return null;
     }

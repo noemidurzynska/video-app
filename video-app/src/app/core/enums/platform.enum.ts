@@ -1,3 +1,4 @@
 export enum PlatformEnum {
-  youTube = 'youtube', vimeo = 'vimeo'
+  youTube = 'youtube',
+  vimeo = 'vimeo',
 }

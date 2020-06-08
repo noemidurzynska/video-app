@@ -14,7 +14,7 @@ import {
 } from './video.actions';
 import { Store } from '@ngrx/store';
 import { VideoStateModel } from '@core/models/videoState.model';
-import { Video } from '@core/models';
+import { Video } from '@core/models/video';
 
 @Injectable()
 export class VideoFacade {
@@ -22,39 +22,39 @@ export class VideoFacade {
 
   constructor(private readonly store: Store<VideoStateModel>) {}
 
-  addYouTubeVideo(payload: { videoId: string }) {
+  addYouTubeVideo(payload: { videoId: Video['id'] }): void {
     this.store.dispatch(addYouTubeVideo(payload));
   }
 
-  addYouTubeVideoSuccess(video: Video) {
+  addYouTubeVideoSuccess(video: Video): void {
     this.store.dispatch(addYouTubeVideoSuccess(video));
   }
 
-  addYouTubeVideoFail() {
+  addYouTubeVideoFail(): void {
     this.store.dispatch(addYouTubeVideoFail());
   }
 
-  addVimeoVideo(payload: { videoId: string }) {
+  addVimeoVideo(payload: { videoId: Video['id'] }): void {
     this.store.dispatch(addVimeoVideo(payload));
   }
 
-  addVimeoVideoSuccess(video: Video) {
+  addVimeoVideoSuccess(video: Video): void {
     this.store.dispatch(addVimeoVideoSuccess(video));
   }
 
-  addVimeoVideoFail() {
+  addVimeoVideoFail(): void {
     this.store.dispatch(addVimeoVideoFail());
   }
 
-  deleteVideo(payload: { videoId: string }) {
+  deleteVideo(payload: { videoId: Video['id'] }): void {
     this.store.dispatch(deleteVideo(payload));
   }
 
-  clearVideos() {
+  clearVideos(): void {
     this.store.dispatch(clearVideos());
   }
 
-  toggleFavouriteVideo(payload: { videoId: string }) {
+  toggleFavouriteVideo(payload: { videoId: Video['id'] }): void {
     this.store.dispatch(toggleFavouriteVideo(payload));
   }
 }

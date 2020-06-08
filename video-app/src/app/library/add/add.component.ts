@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { Passwords } from '@core/models';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { VideoState } from '@store/videos/video.state';
@@ -10,6 +9,7 @@ import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdest
 import { AddVideo } from '@core/models/addVideo';
 import { VideoFacade } from '@store/videos/video.facade';
 import { videoConfig } from '@config/app.config';
+import { Passwords } from '@core/models/passwords';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {

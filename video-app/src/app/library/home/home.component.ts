@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { Video } from '@core/models';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
 import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
@@ -8,6 +7,9 @@ import { PlayerVideoData } from '@core/models/playerVideoData';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { SortEnum } from '@core/enums/sort.enum';
 import { VideoFacade } from '@store/videos/video.facade';
+import { filter } from 'rxjs/operators';
+import { ViewModeEnum } from '@core/enums/view-mode.enum';
+import { Video } from '@core/models/video';
 
 @Component({
   selector: 'app-home',
@@ -22,7 +24,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   public videos: Video[] = [];
   public allVideos: Video[] = [];
   public filteredVideos: Video[] = [];
-  public viewModeValue = 'metro';
+  public viewModeValue = ViewModeEnum.metro;
   public showFavValue = false;
   public sortValue = SortEnum.sortAsc;
   public canCloseWindow = false;
@@ -36,13 +38,15 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.videoFacade.videos$.pipe(untilComponentDestroyed(this)).subscribe((store) => {
-      this.allVideos = store.videoList;
-      if (!this.allVideos) {
-        return;
-      }
-      this.loadVideos();
-    });
+    this.videoFacade.videos$
+      .pipe(
+        filter((store) => !!store.videoList),
+        untilComponentDestroyed(this)
+      )
+      .subscribe((store) => {
+        this.allVideos = store.videoList;
+        this.loadVideos();
+      });
   }
 
   public loadVideos(): void {

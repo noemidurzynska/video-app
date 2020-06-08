@@ -1,7 +1,7 @@
 import * as VideoActions from './video.actions';
 import { VideoState, initializeState } from './video.state';
 import { Action, createReducer, on } from '@ngrx/store';
-import { Video } from '@core/models';
+import { Video } from '@core/models/video';
 
 export const initialState = initializeState();
 
@@ -13,7 +13,7 @@ const reducer = createReducer(
     videoId,
   })),
   on(VideoActions.addYouTubeVideoSuccess, (state, video: Video) => {
-    const videos = state.videoList.slice();
+    const videos = [...state.videoList];
     const foundVideo = state.videoList.find((videoElement) => videoElement.id === video.id);
 
     if (!foundVideo) {

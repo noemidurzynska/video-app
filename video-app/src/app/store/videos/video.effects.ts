@@ -7,28 +7,30 @@ import * as VideoActions from '@store/videos/video.actions';
 import { Observable, of } from 'rxjs';
 import { Action } from '@ngrx/store';
 import { mergeMap, map, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class VideoEffects {
   constructor(
     private readonly youTubeService: YoutubeService,
     private readonly vimeoService: VimeoService,
-    private readonly action$: Actions
+    private readonly action$: Actions,
+    private readonly router: Router
   ) {}
 
   AddYouTubeVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
       ofType(VideoActions.addYouTubeVideo),
-      mergeMap((action) =>
-        this.youTubeService.addVideo(action.videoId).pipe(
-          map((response) => {
-            const video = this.youTubeService.parseVideo(response, action.videoId);
-            if (video === null) {
+      mergeMap(({ videoId }) =>
+        this.youTubeService.addVideo(videoId).pipe(
+          map((video) => {
+            if (!video) {
               return VideoActions.addYouTubeVideoFail();
             }
+            this.router.navigate(['home']);
             return VideoActions.addYouTubeVideoSuccess(video);
           }),
-          catchError((error: Error) => {
+          catchError(() => {
             return of(VideoActions.addYouTubeVideoFail());
           })
         )
@@ -39,14 +41,14 @@ export class VideoEffects {
   AddVimeoVideo$: Observable<Action> = createEffect(() =>
     this.action$.pipe(
       ofType(VideoActions.addVimeoVideo),
-      mergeMap((action) =>
-        this.vimeoService.addVideo(action.videoId).pipe(
+      mergeMap(({ videoId }) =>
+        this.vimeoService.addVideo(videoId).pipe(
           map((video) => {
-            if (video === null) {
+            if (!video) {
               return VideoActions.addVimeoVideoFail();
-            } else {
-              return VideoActions.addVimeoVideoSuccess(video);
             }
+            this.router.navigate(['home']);
+            return VideoActions.addVimeoVideoSuccess(video);
           }),
           catchError(() => {
             return of(VideoActions.addVimeoVideoFail());

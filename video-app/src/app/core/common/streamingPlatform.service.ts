@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { PlatformEnum } from '@core/enums/platform.enum';
+import { Video } from '@core/models/video';
 
 @Injectable()
 export class StreamingPlatformService {
-  public extractIdentifier(videoId: string): string {
+  public extractIdentifier(videoId: Video['id']): string {
     videoId = videoId
       .replace('https://www.', '')
       .replace('https://', '')

@@ -1,6 +1,5 @@
 import { Component, Input, EventEmitter, Output } from '@angular/core';
-import { Video } from '@core/models';
-import { SortEnum } from '@core/enums/sort.enum';
+import { Video } from '@core/models/video';
 
 @Component({
   selector: 'app-video',

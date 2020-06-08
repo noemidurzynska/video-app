@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { SortEnum } from '@core/enums/sort.enum';
+import { ViewModeEnum } from '@core/enums/view-mode.enum';
 
 @Component({
   selector: 'app-control-panel',
@@ -9,14 +10,14 @@ import { SortEnum } from '@core/enums/sort.enum';
 export class ControlPanelComponent {
   @Input() public sort: SortEnum;
   @Input() public fav: boolean;
-  @Input() public view: string;
+  @Input() public view: ViewModeEnum;
 
-  @Output() public sortChange = new EventEmitter();
-  @Output() public viewChange = new EventEmitter();
-  @Output() public favChange = new EventEmitter();
+  @Output() public sortChange = new EventEmitter<SortEnum>();
+  @Output() public viewChange = new EventEmitter<ViewModeEnum>();
+  @Output() public favChange = new EventEmitter<boolean>();
   @Output() public loadVideoEvent = new EventEmitter();
 
-  public onViewChange(viewMode: string): void {
+  public onViewChange(viewMode: ViewModeEnum): void {
     this.viewChange.emit(viewMode);
     this.loadVideoEvent.emit();
   }
