@@ -2,12 +2,9 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { VideoState } from './video.state';
 import {
-  addYouTubeVideo,
-  addYouTubeVideoSuccess,
-  addYouTubeVideoFail,
-  addVimeoVideo,
-  addVimeoVideoSuccess,
-  addVimeoVideoFail,
+  addVideo,
+  addVideoSuccess,
+  addVideoFail,
   deleteVideo,
   clearVideos,
   toggleFavouriteVideo,
@@ -15,6 +12,7 @@ import {
 import { Store } from '@ngrx/store';
 import { VideoStateModel } from '@core/models/videoState.model';
 import { Video } from '@core/models/video';
+import { PlatformEnum } from '@core/enums/platform.enum';
 
 @Injectable()
 export class VideoFacade {
@@ -22,28 +20,16 @@ export class VideoFacade {
 
   constructor(private readonly store: Store<VideoStateModel>) {}
 
-  addYouTubeVideo(payload: { videoId: Video['id'] }): void {
-    this.store.dispatch(addYouTubeVideo(payload));
+  addVideo(payload: { videoId: Video['id']; platform: PlatformEnum }): void {
+    this.store.dispatch(addVideo(payload));
   }
 
-  addYouTubeVideoSuccess(video: Video): void {
-    this.store.dispatch(addYouTubeVideoSuccess(video));
+  addVideoSuccess(video: Video): void {
+    this.store.dispatch(addVideoSuccess(video));
   }
 
-  addYouTubeVideoFail(): void {
-    this.store.dispatch(addYouTubeVideoFail());
-  }
-
-  addVimeoVideo(payload: { videoId: Video['id'] }): void {
-    this.store.dispatch(addVimeoVideo(payload));
-  }
-
-  addVimeoVideoSuccess(video: Video): void {
-    this.store.dispatch(addVimeoVideoSuccess(video));
-  }
-
-  addVimeoVideoFail(): void {
-    this.store.dispatch(addVimeoVideoFail());
+  addVideoFail(): void {
+    this.store.dispatch(addVideoFail());
   }
 
   deleteVideo(payload: { videoId: Video['id'] }): void {

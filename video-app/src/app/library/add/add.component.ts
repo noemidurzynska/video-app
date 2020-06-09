@@ -52,23 +52,19 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
     }
 
     const videoId = this.streamingPlatform.extractIdentifier(this.addVideoData.videoId);
-
-    if (platform === PlatformEnum.youTube) {
-      this.videoFacade.addYouTubeVideo({ videoId });
-    }
-
-    if (platform === PlatformEnum.vimeo) {
-      this.videoFacade.addVimeoVideo({ videoId });
-    }
+    this.videoFacade.addVideo({ videoId, platform });
   }
-
   public onAddDefaultClick(): void {
     const videosYouTubeIds = videoConfig.youTubeVideoIds;
 
-    videosYouTubeIds.forEach((videoId) => this.videoFacade.addYouTubeVideo({ videoId }));
+    videosYouTubeIds.forEach((videoId) =>
+      this.videoFacade.addVideo({ videoId, platform: PlatformEnum.youTube })
+    );
 
     const videosVimeoIds = videoConfig.vimeoVideoIds;
 
-    videosVimeoIds.forEach((videoId) => this.videoFacade.addVimeoVideo({ videoId }));
+    videosVimeoIds.forEach((videoId) =>
+      this.videoFacade.addVideo({ videoId, platform: PlatformEnum.vimeo })
+    );
   }
 }

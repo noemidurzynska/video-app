@@ -17,8 +17,8 @@ export class YoutubeService implements VideoStrategy {
   public addVideo(videoId: Video['id']): Observable<Video> {
     return this.http
       .get<YouTubeResponse>(
-        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}
-        &key=${this.passwords.YouTube}&part=snippet,contentDetails,statistics,status`
+        // tslint:disable-next-line: max-line-length
+        `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=${this.passwords.YouTube}&part=snippet,contentDetails,statistics,status`
       )
       .pipe(
         switchMap((response: YouTubeResponse) => {

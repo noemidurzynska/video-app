@@ -7,12 +7,13 @@ export const initialState = initializeState();
 
 const reducer = createReducer(
   initialState,
-  on(VideoActions.addYouTubeVideo, (state, { videoId }) => ({
+  on(VideoActions.addVideo, (state, { videoId, platform }) => ({
     ...state,
     showErrorMessage: false,
     videoId,
+    platform,
   })),
-  on(VideoActions.addYouTubeVideoSuccess, (state, video: Video) => {
+  on(VideoActions.addVideoSuccess, (state, video: Video) => {
     const videos = [...state.videoList];
     const foundVideo = state.videoList.find((videoElement) => videoElement.id === video.id);
 
@@ -23,13 +24,9 @@ const reducer = createReducer(
     return { ...state, videoList: videos, showErrorMessage: false };
   }),
 
-  on(VideoActions.addYouTubeVideoFail, (state) => ({ ...state, showErrorMessage: true })),
-  on(VideoActions.addVimeoVideo, (state, { videoId }) => ({
-    ...state,
-    showErrorMessage: false,
-    videoId,
-  })),
-  on(VideoActions.addVimeoVideoSuccess, (state, video: Video) => {
+  on(VideoActions.addVideoFail, (state) => ({ ...state, showErrorMessage: true })),
+
+  on(VideoActions.addVideoSuccess, (state, video: Video) => {
     const videos = [...state.videoList];
     const foundVideo = state.videoList.find((videoElement) => videoElement.id === video.id);
     if (!foundVideo) {
@@ -37,7 +34,7 @@ const reducer = createReducer(
     }
     return { ...state, videoList: videos, showErrorMessage: false };
   }),
-  on(VideoActions.addVimeoVideoFail, (state) => ({ ...state, showErrorMessage: true })),
+  on(VideoActions.addVideoFail, (state) => ({ ...state, showErrorMessage: true })),
   on(VideoActions.deleteVideo, (state, { videoId }) => ({
     ...state,
     videoList: state.videoList.filter((videoElement) => videoElement.id !== videoId),

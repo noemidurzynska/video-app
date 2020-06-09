@@ -1,29 +1,15 @@
 import { createAction, props } from '@ngrx/store';
 import { Video } from '@core/models/video';
+import { PlatformEnum } from '@core/enums/platform.enum';
 
-export const addYouTubeVideo = createAction(
-  '[Video] - Add YouTube Video',
-  props<{ videoId: Video['id'] }>()
+export const addVideo = createAction(
+  '[Video] -  Add Video',
+  props<{ videoId: Video['id']; platform: PlatformEnum }>()
 );
 
-export const addYouTubeVideoSuccess = createAction(
-  '[Video] - Add YouTube Video Success',
-  props<Video>()
-);
+export const addVideoSuccess = createAction('[Video] - Add Video Success', props<Video>());
 
-export const addYouTubeVideoFail = createAction('[Video] - Add YouTube Video Fail');
-
-export const addVimeoVideo = createAction(
-  '[Video] -  Add Vimeo Video',
-  props<{ videoId: Video['id'] }>()
-);
-
-export const addVimeoVideoSuccess = createAction(
-  '[Video] - Add Vimeo Video Success',
-  props<Video>()
-);
-
-export const addVimeoVideoFail = createAction('[Video] - Add Vimeo Video Fail');
+export const addVideoFail = createAction('[Video] - Add Video Fail');
 
 export const deleteVideo = createAction(
   '[Video] - Delete Video',
