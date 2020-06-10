@@ -6,10 +6,10 @@ import { PlatformEnum } from '@core/enums/platform.enum';
 import { VimeoResponse } from '@core/models/vimeo.response';
 import { Video } from '@core/models/video';
 import { Passwords } from '@core/models/passwords';
-import { VideoStrategy } from '@core/strategy/videoStrategy';
+import { PlatformService } from '@core/platform.service';
 
 @Injectable()
-export class VimeoService implements VideoStrategy {
+export class VimeoService implements PlatformService {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient) {}
@@ -28,7 +28,7 @@ export class VimeoService implements VideoStrategy {
       );
   }
 
-  private parseVideo(response: VimeoResponse, videoId: Video['id']): Video {
+  public parseVideo(response: VimeoResponse, videoId: Video['id']): Video {
     const video: Video = {
       sourceType: PlatformEnum.vimeo,
       id: response.resource_key,
@@ -43,5 +43,13 @@ export class VimeoService implements VideoStrategy {
       fav: false,
     };
     return video;
+  }
+  public extractIdentifier(videoId: Video['id']): string {
+    videoId = videoId.replace('https://www.', '').replace('https://', '').replace('vimeo.com/', '');
+    return videoId;
+  }
+
+  public getUrlAddress(urlCode: string): string {
+    return `https://player.vimeo.com/video/${urlCode}`;
   }
 }

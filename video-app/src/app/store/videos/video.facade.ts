@@ -1,35 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { VideoState } from './video.state';
-import {
-  addVideo,
-  addVideoSuccess,
-  addVideoFail,
-  deleteVideo,
-  clearVideos,
-  toggleFavouriteVideo,
-} from './video.actions';
+import { addVideo, deleteVideo, clearVideos, toggleFavouriteVideo } from './video.actions';
 import { Store } from '@ngrx/store';
 import { VideoStateModel } from '@core/models/videoState.model';
 import { Video } from '@core/models/video';
 import { PlatformEnum } from '@core/enums/platform.enum';
+import { VideoService } from '@core/video.service';
 
 @Injectable()
 export class VideoFacade {
   public videos$: Observable<VideoState> = this.store.select('videos');
 
-  constructor(private readonly store: Store<VideoStateModel>) {}
+  constructor(
+    private readonly store: Store<VideoStateModel>,
+    private readonly videoService: VideoService
+  ) {}
 
   addVideo(payload: { videoId: Video['id']; platform: PlatformEnum }): void {
     this.store.dispatch(addVideo(payload));
-  }
-
-  addVideoSuccess(video: Video): void {
-    this.store.dispatch(addVideoSuccess(video));
-  }
-
-  addVideoFail(): void {
-    this.store.dispatch(addVideoFail());
   }
 
   deleteVideo(payload: { videoId: Video['id'] }): void {
@@ -42,5 +31,12 @@ export class VideoFacade {
 
   toggleFavouriteVideo(payload: { videoId: Video['id'] }): void {
     this.store.dispatch(toggleFavouriteVideo(payload));
+  }
+
+  extractIdentifier(platform: PlatformEnum, videoId: Video['id']): string {
+    return this.videoService.extractIdentifier(platform, videoId);
+  }
+  getUrlAddress(platform: PlatformEnum, urlCode: string): string {
+    return this.videoService.getUrlAddress(platform, urlCode);
   }
 }

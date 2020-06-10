@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { FormControl, FormGroupDirective, NgForm, Validators } from '@angular/forms';
-import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { VideoState } from '@store/videos/video.state';
 import { PlatformEnum } from '@core/enums/platform.enum';
@@ -31,10 +30,7 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
   public identifierFormControl = new FormControl('', [Validators.required, Validators.email]);
   public matcher = new MyErrorStateMatcher();
 
-  constructor(
-    private readonly streamingPlatform: StreamingPlatformService,
-    private readonly videoFacade: VideoFacade
-  ) {
+  constructor(private readonly videoFacade: VideoFacade) {
     super();
   }
 
@@ -51,7 +47,7 @@ export class AddComponent extends OnDestroyMixin implements OnInit {
       return;
     }
 
-    const videoId = this.streamingPlatform.extractIdentifier(this.addVideoData.videoId);
+    const videoId = this.videoFacade.extractIdentifier(platform, this.addVideoData.videoId);
     this.videoFacade.addVideo({ videoId, platform });
   }
   public onAddDefaultClick(): void {

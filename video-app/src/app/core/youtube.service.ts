@@ -5,11 +5,11 @@ import { PlatformEnum } from '@core/enums/platform.enum';
 import { YouTubeResponse } from '@core/models/youtube.response';
 import { Video } from '@core/models/video';
 import { Passwords } from '@core/models/passwords';
-import { VideoStrategy } from '@core/strategy/videoStrategy';
+import { PlatformService } from '@core/platform.service';
 import { switchMap, catchError } from 'rxjs/operators';
 
 @Injectable()
-export class YoutubeService implements VideoStrategy {
+export class YoutubeService implements PlatformService {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient) {}
@@ -30,7 +30,7 @@ export class YoutubeService implements VideoStrategy {
         })
       );
   }
-  private parseVideo(response: YouTubeResponse, videoId: Video['id']): Video {
+  public parseVideo(response: YouTubeResponse, videoId: Video['id']): Video {
     if (response.items.length === 0) {
       return null;
     }
@@ -51,5 +51,17 @@ export class YoutubeService implements VideoStrategy {
       fav: false,
     };
     return video;
+  }
+  public extractIdentifier(videoId: Video['id']): string {
+    videoId = videoId
+      .replace('https://www.', '')
+      .replace('https://', '')
+      .replace('youtube.com/watch?v=', '')
+      .replace('youtu.be/', '');
+    return videoId;
+  }
+
+  public getUrlAddress(urlCode: string): string {
+    return `https://www.youtube.com/embed/${urlCode}`;
   }
 }

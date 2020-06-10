@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { MatDialog } from '@angular/material/dialog';
 import { PlayerComponent } from '../player/player.component';
-import { StreamingPlatformService } from '@core/common/streamingPlatform.service';
 import { PlayerVideoData } from '@core/models/playerVideoData';
 import { OnDestroyMixin, untilComponentDestroyed } from '@w11k/ngx-componentdestroyed';
 import { SortEnum } from '@core/enums/sort.enum';
@@ -29,11 +28,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
   public sortValue = SortEnum.sortAsc;
   public canCloseWindow = false;
 
-  constructor(
-    public dialog: MatDialog,
-    private readonly streamingPlatformService: StreamingPlatformService,
-    private readonly videoFacade: VideoFacade
-  ) {
+  constructor(public dialog: MatDialog, private readonly videoFacade: VideoFacade) {
     super();
   }
 
@@ -92,7 +87,7 @@ export class HomeComponent extends OnDestroyMixin implements OnInit {
     }
     this.canCloseWindow = true;
 
-    const urlAdress = this.streamingPlatformService.getUrlAddress(video.sourceType, video.urlCode);
+    const urlAdress = this.videoFacade.getUrlAddress(video.sourceType, video.urlCode);
 
     const playerVideoData: PlayerVideoData = { title: video.title, urlPlayer: urlAdress };
     this.dialog
