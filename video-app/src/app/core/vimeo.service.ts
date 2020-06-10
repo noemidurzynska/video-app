@@ -9,7 +9,7 @@ import { Passwords } from '@core/models/passwords';
 import { PlatformService } from '@core/platform.service';
 
 @Injectable()
-export class VimeoService implements PlatformService {
+export class VimeoService implements PlatformService<VimeoResponse> {
   public passwords = new Passwords();
 
   constructor(private readonly http: HttpClient) {}
@@ -45,8 +45,7 @@ export class VimeoService implements PlatformService {
     return video;
   }
   public extractIdentifier(videoId: Video['id']): string {
-    videoId = videoId.replace('https://www.', '').replace('https://', '').replace('vimeo.com/', '');
-    return videoId;
+    return videoId.replace('https://www.', '').replace('https://', '').replace('vimeo.com/', '');
   }
 
   public getUrlAddress(urlCode: string): string {
